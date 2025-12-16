@@ -1,2 +1,1 @@
-// Export models from the profile feature
-
+export * from './user-profile.model';

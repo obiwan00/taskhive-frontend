@@ -1,2 +1,1 @@
-// Export models from the projects feature
-
+export * from './my-ticket.model';

@@ -13,7 +13,19 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "paths": {
+      "@core/models": ["./src/app/core/models/index.ts"],
+      "@shared/components": ["./src/app/shared/components/index.ts"],
+      "@shared/directives": ["./src/app/shared/directives/index.ts"],
+      "@shared/pipes": ["./src/app/shared/pipes/index.ts"],
+      "@shared/utils": ["./src/app/shared/utils/index.ts"],
+      "@features/projects": ["./src/app/features/projects/index.ts"],
+      "@features/my-tickets": ["./src/app/features/my-tickets/index.ts"],
+      "@features/auth": ["./src/app/features/auth/index.ts"],
+      "@features/profile": ["./src/app/features/profile/index.ts"],
+      "@layouts": ["./src/app/layouts/index.ts"],
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
