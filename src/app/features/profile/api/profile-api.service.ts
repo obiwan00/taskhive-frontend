@@ -1,12 +1,15 @@
-// API service stub for profile feature
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { UserProfile } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileApiService {
-  constructor() {}
+  private readonly http = inject(HttpClient);
 
-  // TODO: Implement getUserProfile, updateUserProfile methods
+  getUserProfile() {
+    return this.http.get<UserProfile>('/api/me');
+  }
 }
 

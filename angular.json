@@ -64,7 +64,8 @@
               "buildTarget": "taskhive-frontend:build:production"
             },
             "development": {
-              "buildTarget": "taskhive-frontend:build:development"
+              "buildTarget": "taskhive-frontend:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

@@ -1,4 +1,4 @@
-export interface ListResults<T> {
+export interface ListResult<T> {
   items: Array<T>;
 }
 
