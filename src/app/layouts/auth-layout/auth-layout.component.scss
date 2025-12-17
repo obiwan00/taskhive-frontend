@@ -1,12 +1,22 @@
 .auth-layout {
   display: flex;
-  align-items: center;
   justify-content: center;
+  flex-direction: column;
   min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+}
 
-  main {
-    width: 100%;
-    max-width: 500px;
-  }
+
+
+.auth-logo {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.auth-container {
+  max-width: 600px;
+  width: 100%;
+  padding: 0 1rem;
+  margin: 0 auto;
 }
 

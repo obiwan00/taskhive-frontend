@@ -1,4 +1,3 @@
-
 You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
 
 ## TypeScript Best Practices
@@ -56,3 +55,9 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+## Styling
+
+- Never hardcode hex, RGB, or other color values in components or styles (box shadows, gradients, and rgba values could be exceptions when used with CSS variables)
+- Always use CSS variables for colors from the design system
+- Reference the `styles/variables.scss` file for available color variables

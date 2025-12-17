@@ -3,10 +3,6 @@ export interface LoginUser {
   password: string;
 }
 
-export interface RefreshToken {
-  refreshToken: string;
-}
-
 export interface RegisterUser {
   email: string;
   firstName: string;
@@ -20,4 +16,7 @@ export interface AccessTokens {
   refreshToken: string;
 }
 
+export interface RefreshToken {
+  refreshToken: string;
+}
 

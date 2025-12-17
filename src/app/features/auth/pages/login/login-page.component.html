@@ -1,5 +1,60 @@
-<div class="login-page">
+<div class="login-container">
   <h1>Login</h1>
-  <p>Login page placeholder</p>
+
+  @if (errorMessage()) {
+    <app-info-block type="error" class="info-block">
+      {{ errorMessage() }}
+    </app-info-block>
+  }
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        formControlName="email"
+        placeholder="Enter your email"
+      />
+      @let emailControl = loginForm.get('email');
+      @if (emailControl?.invalid && emailControl?.touched) {
+        <mat-error>
+          {{ getValidationMessage(emailControl?.errors) }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        placeholder="Enter your password"
+      />
+      @let passwordControl = loginForm.get('password');
+      @if (passwordControl?.invalid && passwordControl?.touched) {
+        <mat-error>
+          {{ getValidationMessage(passwordControl?.errors) }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <button
+      matButton="filled"
+      type="submit"
+      [disabled]="loginForm.invalid || isLoading()"
+    >
+      @if (isLoading()) {
+        Logging in...
+      } @else {
+        Login
+      }
+    </button>
+  </form>
+
+  <div class="register-block">
+    Don't have an account? <a routerLink="/auth/register">Register here</a>
+  </div>
 </div>
 

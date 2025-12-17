@@ -1,4 +1,40 @@
-.login-page {
+.login-container {
+  background: var(--color-bg);
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   padding: 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  width: 100%;
+
+  h1 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--color-text);
+  }
+}
+
+.info-block {
+  margin-bottom: 1.5rem;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.register-block {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
 }
 

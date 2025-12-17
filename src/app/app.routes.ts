@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
-import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
-import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
+import { AuthLayoutComponent, AppLayoutComponent } from '@layouts';
+import {authenticatedGuard, unauthenticatedGuard} from '@features/auth';
 
 export const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayoutComponent,
+    canActivate: [unauthenticatedGuard],
     children: [
       {
         path: '',
@@ -16,6 +17,7 @@ export const routes: Routes = [
   {
     path: 'app',
     component: AppLayoutComponent,
+    canActivate: [authenticatedGuard],
     children: [
       {
         path: 'profile',
@@ -36,6 +38,5 @@ export const routes: Routes = [
       }
     ]
   },
-  // TODO redirect empty path to 'app' or 'auth' based on authentication status
   { path: '**', redirectTo: 'auth', pathMatch: 'full' },
 ];
