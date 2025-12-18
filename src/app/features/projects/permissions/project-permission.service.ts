@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ProjectRole } from '@core/models';
 import { ProjectPermission } from './project-permission.model';
 import { projectPermissionMapping } from './project-permission-mapping';

@@ -1,6 +1,6 @@
 import {HttpParams} from '@angular/common/http';
 
-export function toHttpParams(params: { [key: string]: any } | null | undefined): HttpParams | undefined {
+export function toHttpParams(params: Record<string, any> | null | undefined): HttpParams | undefined {
   if (!params) {
     return undefined;
   }

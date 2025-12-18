@@ -19,9 +19,9 @@ export class AuthInterceptor implements HttpInterceptor {
   private refreshToken$$ = new BehaviorSubject<string | null>(null);
 
   intercept(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     const accessToken = this.tokenService.getAccessToken();
 
     if (accessToken) {
@@ -33,7 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
     );
   }
 
-  private addToken(request: HttpRequest<any>, token: string): HttpRequest<any> {
+  private addToken(request: HttpRequest<unknown>, token: string): HttpRequest<unknown> {
     return request.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
@@ -41,7 +41,7 @@ export class AuthInterceptor implements HttpInterceptor {
     });
   }
 
-  private handleRequestError(error: any, request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  private handleRequestError(error: unknown, request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (error instanceof HttpErrorResponse && error.status === 401) {
       return this.handle401Error(request, next);
     }
@@ -50,18 +50,18 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handle401Error(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     return this.isRefreshTokenInProgress
       ? this.waitForTokenRefresh(request, next)
       : this.performTokenRefresh(request, next);
   }
 
   private waitForTokenRefresh(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     return this.refreshToken$$.pipe(
       filter(token => token != null),
       take(1),
@@ -70,9 +70,9 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private performTokenRefresh(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     this.isRefreshTokenInProgress = true;
     this.refreshToken$$.next(null);
 
@@ -83,16 +83,16 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private retryRequestWithNewToken(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     this.isRefreshTokenInProgress = false;
     const newAccessToken = this.tokenService.getAccessToken();
     this.refreshToken$$.next(newAccessToken);
     return next.handle(this.addToken(request, newAccessToken!));
   }
 
-  private handleRefreshError(error: any): Observable<never> {
+  private handleRefreshError(error: unknown): Observable<never> {
     this.isRefreshTokenInProgress = false;
     this.authService.logout();
     return throwError(() => error);

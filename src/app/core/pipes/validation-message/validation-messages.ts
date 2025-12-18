@@ -1,10 +1,12 @@
-type ValidationMessage = string | ((error: any) => string);
+import {ValidationErrors} from '@angular/forms';
+
+type ValidationMessage = string | ((error: ValidationErrors) => string);
 
 export const ValidationMessages: Record<string, ValidationMessage> = {
   required: 'This field is required',
   email: 'Please enter a valid email address',
-  minlength: (error) => `Must be at least ${error.requiredLength} characters`,
-  maxlength: (error) => `Must not exceed ${error.requiredLength} characters`,
+  minlength: (error) => `Must be at least ${error['requiredLength']} characters`,
+  maxlength: (error) => `Must not exceed ${error['requiredLength']} characters`,
   passwordMismatch: 'Passwords do not match',
   passwordRequiresDigit: 'Passwords must have at least one digit (0-9)',
   passwordRequiresUpper: 'Passwords must have at least one uppercase (A-Z)',
@@ -12,7 +14,7 @@ export const ValidationMessages: Record<string, ValidationMessage> = {
   invalid: 'Invalid value',
 } as const;
 
-export function getValidationMessage(error: Record<string, any> | null | undefined): string {
+export function getValidationMessage(error: Record<string, ValidationErrors> | null | undefined): string {
   if (!error) {
     return '';
   }

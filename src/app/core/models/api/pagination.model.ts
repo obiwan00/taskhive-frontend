@@ -6,7 +6,7 @@ export interface PaginationMeta {
 }
 
 export interface PagedResult<T> {
-  items: Array<T>;
+  items: T[];
   pagination: PaginationMeta;
 }
 
