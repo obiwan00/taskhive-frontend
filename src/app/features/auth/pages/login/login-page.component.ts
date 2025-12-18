@@ -28,15 +28,15 @@ export class LoginPageComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  isLoading = signal(false);
-  errorMessage = signal<string | null>(null);
+  protected readonly isLoading = signal(false);
+  protected readonly errorMessage = signal<string | null>(null);
 
-  loginForm = this.fb.nonNullable.group({
+  protected readonly loginForm = this.fb.nonNullable.group({
     email: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.email] }),
     password: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.minLength(6)] })
   });
 
-  onSubmit(): void {
+  protected onSubmit(): void {
     if (this.loginForm.invalid || this.isLoading()) {
       return;
     }
