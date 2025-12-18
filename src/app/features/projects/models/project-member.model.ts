@@ -1,4 +1,4 @@
-import {ProjectRole} from '@core/models';
+import { ProjectRole } from '@core/models';
 
 export interface AddProjectMember {
   email: string;

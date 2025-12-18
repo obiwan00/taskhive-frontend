@@ -1,5 +1,6 @@
-import {ProjectRole} from '@core/models';
-import {ProjectPermission} from './project-permission.model';
+import { ProjectRole } from '@core/models';
+
+import { ProjectPermission } from './project-permission.model';
 
 export const projectPermissionMapping: Record<ProjectRole, ProjectPermission[]> = {
   [ProjectRole.Owner]: Object.values(ProjectPermission),

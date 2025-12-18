@@ -1,9 +1,12 @@
-import {Injectable, inject, signal} from '@angular/core';
-import {Observable, tap, catchError, of, map} from 'rxjs';
-import {AuthApiService} from '../api';
-import {TokenService} from './token.service';
-import {AccessTokens, LoginUser, RegisterUser} from '../models';
-import {Router} from '@angular/router';
+import { Injectable, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Observable, catchError, map, of, tap } from 'rxjs';
+
+import { AuthApiService } from '../api';
+import { AccessTokens, LoginUser, RegisterUser } from '../models';
+
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +55,7 @@ export class AuthService {
       return of(void 0);
     }
 
-    return this.authApi.refreshToken({refreshToken}).pipe(
+    return this.authApi.refreshToken({ refreshToken }).pipe(
       tap((tokens: AccessTokens) => {
         this.tokenService.setTokens(tokens.accessToken, tokens.refreshToken);
       }),

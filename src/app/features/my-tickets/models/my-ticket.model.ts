@@ -1,4 +1,4 @@
-import {PaginationQuery, TicketStatus} from '@core/models';
+import { PaginationQuery, TicketStatus } from '@core/models';
 
 export interface GetMyTicketsQuery extends PaginationQuery {
   search?: string;

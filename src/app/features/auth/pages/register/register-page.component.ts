@@ -1,15 +1,19 @@
-import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Router, RouterModule} from '@angular/router';
-import {AuthService} from '../../services';
-import {HttpErrorResponse} from '@angular/common/http';
-import {passwordMatchValidator, getPasswordValidators} from '../../validators';
-import {RegisterUser} from '../../models';
-import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {MatButton} from '@angular/material/button';
-import {InfoBlockComponent} from '@shared/components';
-import {ValidationMessagePipe} from '@core/pipe';
+import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { Router, RouterModule } from '@angular/router';
+
+import { ValidationMessagePipe } from '@core/pipe';
+import { InfoBlockComponent } from '@shared/components';
+
+import { RegisterUser } from '../../models';
+import { AuthService } from '../../services';
+import { getPasswordValidators, passwordMatchValidator } from '../../validators';
+
+
 
 
 @Component({
@@ -30,13 +34,13 @@ export class RegisterPageComponent {
 
   registerForm = this.fb.nonNullable.group(
     {
-      email: this.fb.nonNullable.control('', {validators: [Validators.required, Validators.email]}),
-      firstName: this.fb.nonNullable.control('', {validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100)]}),
-      lastName: this.fb.nonNullable.control('', {validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100)]}),
-      password: this.fb.nonNullable.control('', {validators: [Validators.required, Validators.minLength(6), ...getPasswordValidators()]}),
-      confirmPassword: this.fb.nonNullable.control('', {validators: [Validators.required]}),
+      email: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.email] }),
+      firstName: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100)] }),
+      lastName: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100)] }),
+      password: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.minLength(6), ...getPasswordValidators()] }),
+      confirmPassword: this.fb.nonNullable.control('', { validators: [Validators.required] }),
     },
-    {validators: passwordMatchValidator}
+    { validators: passwordMatchValidator }
   );
 
   onSubmit(): void {

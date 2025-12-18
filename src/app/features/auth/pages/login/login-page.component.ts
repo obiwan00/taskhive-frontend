@@ -1,14 +1,18 @@
-import {Component, ChangeDetectionStrategy, inject, signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Router, RouterModule} from '@angular/router';
-import {AuthService} from '../../services';
-import {HttpErrorResponse} from '@angular/common/http';
-import {LoginUser} from '../../models';
-import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {MatButton} from '@angular/material/button';
-import {InfoBlockComponent} from '@shared/components';
-import {ValidationMessagePipe} from '@core/pipe';
+import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { Router, RouterModule } from '@angular/router';
+
+import { ValidationMessagePipe } from '@core/pipe';
+import { InfoBlockComponent } from '@shared/components';
+
+import { LoginUser } from '../../models';
+import { AuthService } from '../../services';
+
+
 
 
 @Component({
@@ -28,8 +32,8 @@ export class LoginPageComponent {
   errorMessage = signal<string | null>(null);
 
   loginForm = this.fb.nonNullable.group({
-    email: this.fb.nonNullable.control('', {validators: [Validators.required, Validators.email]}),
-    password: this.fb.nonNullable.control('', {validators: [Validators.required, Validators.minLength(6)]})
+    email: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.email] }),
+    password: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.minLength(6)] })
   });
 
   onSubmit(): void {

@@ -1,4 +1,4 @@
-import {PaginationQuery, ProjectRole} from '@core/models';
+import { PaginationQuery, ProjectRole } from '@core/models';
 
 export interface GetProjectsQuery extends PaginationQuery {
   search?: string;

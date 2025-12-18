@@ -1,4 +1,4 @@
-import {ValidationErrors} from '@angular/forms';
+import { ValidationErrors } from '@angular/forms';
 
 type ValidationMessage = string | ((error: ValidationErrors) => string);
 

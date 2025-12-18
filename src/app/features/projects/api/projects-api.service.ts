@@ -1,8 +1,10 @@
-import {HttpClient} from '@angular/common/http';
-import {inject, Injectable} from '@angular/core';
-import {ListResult, PagedResult} from '@core/models';
-import {CreateProject, GetProjectsQuery, ProjectBrief, ProjectDetails, UpdateProject, ProjectAssignee} from '../models';
-import {toHttpParams} from '@core/utils';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+
+import { ListResult, PagedResult } from '@core/models';
+import { toHttpParams } from '@core/utils';
+
+import { CreateProject, GetProjectsQuery, ProjectAssignee, ProjectBrief, ProjectDetails, UpdateProject } from '../models';
 
 
 @Injectable({
@@ -12,7 +14,7 @@ export class ProjectsApiService {
   private readonly http = inject(HttpClient);
 
   getPagedList(query?: GetProjectsQuery) {
-    return this.http.get<PagedResult<ProjectBrief>>(`/api/projects`, {params: toHttpParams(query)});
+    return this.http.get<PagedResult<ProjectBrief>>(`/api/projects`, { params: toHttpParams(query) });
   }
 
   getDetails(projectId: string) {

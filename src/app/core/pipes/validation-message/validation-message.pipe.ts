@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { ValidationErrors } from '@angular/forms';
+
 import { getValidationMessage } from './validation-messages';
-import {ValidationErrors} from '@angular/forms';
 
 @Pipe({
   name: 'validationMessage',

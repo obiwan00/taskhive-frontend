@@ -1,7 +1,9 @@
-import {Routes} from '@angular/router';
-import {AuthLayoutComponent, AppLayoutComponent} from '@layouts';
-import {authenticatedGuard, unauthenticatedGuard} from '@features/auth';
-import {loadProfileGuard} from '@features/profile';
+import { Routes } from '@angular/router';
+
+import { AppLayoutComponent, AuthLayoutComponent } from '@layouts';
+
+import { authenticatedGuard, unauthenticatedGuard } from '@features/auth';
+import { loadProfileGuard } from '@features/profile';
 
 export const routes: Routes = [
   {
@@ -39,5 +41,5 @@ export const routes: Routes = [
       }
     ]
   },
-  {path: '**', redirectTo: 'auth', pathMatch: 'full'},
+  { path: '**', redirectTo: 'auth', pathMatch: 'full' },
 ];

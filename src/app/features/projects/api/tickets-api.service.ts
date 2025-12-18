@@ -1,8 +1,10 @@
-import {HttpClient} from '@angular/common/http';
-import {inject, Injectable} from '@angular/core';
-import {PagedResult} from '@core/models';
-import {CreateTicket, GetTicketsQuery, TicketBrief, TicketDetails, UpdateTicket} from '../models';
-import {toHttpParams} from '@core/utils';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+
+import { PagedResult } from '@core/models';
+import { toHttpParams } from '@core/utils';
+
+import { CreateTicket, GetTicketsQuery, TicketBrief, TicketDetails, UpdateTicket } from '../models';
 
 
 @Injectable({
@@ -12,7 +14,7 @@ export class TicketsApiService {
   private readonly http = inject(HttpClient);
 
   getPagedList(projectId: string, query?: GetTicketsQuery) {
-    return this.http.get<PagedResult<TicketBrief>>(`/api/projects/${projectId}/tickets`, {params: toHttpParams(query)});
+    return this.http.get<PagedResult<TicketBrief>>(`/api/projects/${projectId}/tickets`, { params: toHttpParams(query) });
   }
 
   getDetails(projectId: string, ticketId: string) {

@@ -1,8 +1,11 @@
-import {effect, inject, Injectable, signal} from '@angular/core';
-import {AuthService} from '@features/auth';
-import {ProfileApiService} from '../api';
-import {UserProfile} from '../models';
-import {Observable, tap} from 'rxjs';
+import { Injectable, effect, inject, signal } from '@angular/core';
+
+import { Observable, tap } from 'rxjs';
+
+import { AuthService } from '@features/auth';
+
+import { ProfileApiService } from '../api';
+import { UserProfile } from '../models';
 
 @Injectable({
   providedIn: 'root',

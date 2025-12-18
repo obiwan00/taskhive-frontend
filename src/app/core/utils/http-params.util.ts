@@ -1,4 +1,4 @@
-import {HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 
 export function toHttpParams(params: Record<string, any> | null | undefined): HttpParams | undefined {
   if (!params) {
@@ -14,5 +14,5 @@ export function toHttpParams(params: Record<string, any> | null | undefined): Ht
       return [[key, String(value)]];
     });
 
-  return new HttpParams({fromObject: Object.fromEntries(filteredEntries)});
+  return new HttpParams({ fromObject: Object.fromEntries(filteredEntries) });
 }
