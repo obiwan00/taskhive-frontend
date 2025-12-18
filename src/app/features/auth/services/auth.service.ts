@@ -1,8 +1,9 @@
 import {Injectable, inject, signal} from '@angular/core';
 import {Observable, tap, catchError, of, map} from 'rxjs';
-import {AuthApiService} from '../api/auth-api.service';
+import {AuthApiService} from '../api';
 import {TokenService} from './token.service';
 import {AccessTokens, LoginUser, RegisterUser} from '../models';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import {AccessTokens, LoginUser, RegisterUser} from '../models';
 export class AuthService {
   private readonly authApi = inject(AuthApiService);
   private readonly tokenService = inject(TokenService);
+  private readonly router = inject(Router);
 
   private isAuthenticated = signal(this.tokenService.hasAccessToken());
 
@@ -65,6 +67,7 @@ export class AuthService {
   logout(): void {
     this.tokenService.clearTokens();
     this.isAuthenticated.set(false);
+    this.router.navigate(['/auth/login']);
   }
 
   get isLoggedIn() {

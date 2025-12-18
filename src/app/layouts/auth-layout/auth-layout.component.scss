@@ -1,12 +1,10 @@
-.auth-layout {
+:host {
   display: flex;
   justify-content: center;
   flex-direction: column;
   min-height: 100vh;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
 }
-
-
 
 .auth-logo {
   padding: 2rem 0;

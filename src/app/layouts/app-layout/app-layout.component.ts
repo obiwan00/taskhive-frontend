@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import {AppHeaderComponent} from './header/app-header.component';
 
 @Component({
   selector: 'app-app-layout',
-  standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, AppHeaderComponent],
   templateUrl: './app-layout.component.html',
   styleUrl: './app-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,6 +1,7 @@
-import { Routes } from '@angular/router';
-import { AuthLayoutComponent, AppLayoutComponent } from '@layouts';
+import {Routes} from '@angular/router';
+import {AuthLayoutComponent, AppLayoutComponent} from '@layouts';
 import {authenticatedGuard, unauthenticatedGuard} from '@features/auth';
+import {loadProfileGuard} from '@features/profile';
 
 export const routes: Routes = [
   {
@@ -17,7 +18,7 @@ export const routes: Routes = [
   {
     path: 'app',
     component: AppLayoutComponent,
-    canActivate: [authenticatedGuard],
+    canActivate: [authenticatedGuard, loadProfileGuard],
     children: [
       {
         path: 'profile',
@@ -38,5 +39,5 @@ export const routes: Routes = [
       }
     ]
   },
-  { path: '**', redirectTo: 'auth', pathMatch: 'full' },
+  {path: '**', redirectTo: 'auth', pathMatch: 'full'},
 ];
