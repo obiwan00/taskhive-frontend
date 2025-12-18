@@ -19,7 +19,7 @@
       @let emailControl = loginForm.get('email');
       @if (emailControl?.invalid && emailControl?.touched) {
         <mat-error>
-          {{ getValidationMessage(emailControl?.errors) }}
+          {{ emailControl?.errors | validationMessage }}
         </mat-error>
       }
     </mat-form-field>
@@ -35,7 +35,7 @@
       @let passwordControl = loginForm.get('password');
       @if (passwordControl?.invalid && passwordControl?.touched) {
         <mat-error>
-          {{ getValidationMessage(passwordControl?.errors) }}
+          {{ passwordControl?.errors | validationMessage }}
         </mat-error>
       }
     </mat-form-field>

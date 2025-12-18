@@ -17,7 +17,7 @@
     "paths": {
       "@core/models": ["./src/app/core/models/index.ts"],
       "@core/utils": ["./src/app/core/utils/index.ts"],
-      "@core/validators": ["./src/app/core/validators/index.ts"],
+      "@core/pipe": ["./src/app/core/pipes/index.ts"],
       "@shared/components": ["./src/app/shared/components/index.ts"],
       "@shared/directives": ["./src/app/shared/directives/index.ts"],
       "@shared/pipes": ["./src/app/shared/pipes/index.ts"],

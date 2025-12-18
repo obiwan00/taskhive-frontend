@@ -9,13 +9,13 @@ import {RegisterUser} from '../../models';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {InfoBlockComponent} from '@shared/components';
-import {getValidationMessage} from '@core/validators';
+import {ValidationMessagePipe} from '@core/pipe';
 
 
 @Component({
   selector: 'app-register-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, MatError, MatFormField, MatInput, MatLabel, MatButton, InfoBlockComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, MatError, MatFormField, MatInput, MatLabel, MatButton, InfoBlockComponent, ValidationMessagePipe],
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -27,8 +27,6 @@ export class RegisterPageComponent {
 
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
-
-  getValidationMessage = getValidationMessage;
 
   registerForm = this.fb.nonNullable.group(
     {

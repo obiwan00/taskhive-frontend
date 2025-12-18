@@ -19,7 +19,7 @@
       @let emailControl = registerForm.get('email');
       @if (emailControl?.invalid && emailControl?.touched) {
         <mat-error>
-          {{ getValidationMessage(emailControl?.errors!) }}
+          {{ emailControl?.errors | validationMessage }}
         </mat-error>
       }
     </mat-form-field>
@@ -36,7 +36,7 @@
         @let firstNameControl = registerForm.get('firstName');
         @if (firstNameControl?.invalid && firstNameControl?.touched) {
           <mat-error>
-            {{ getValidationMessage(firstNameControl?.errors) }}
+            {{ firstNameControl?.errors | validationMessage }}
           </mat-error>
         }
       </mat-form-field>
@@ -52,7 +52,7 @@
         @let lastNameControl = registerForm.get('lastName');
         @if (lastNameControl?.invalid && lastNameControl?.touched) {
           <mat-error>
-            {{ getValidationMessage(lastNameControl?.errors) }}
+            {{ lastNameControl?.errors | validationMessage }}
           </mat-error>
         }
       </mat-form-field>
@@ -69,7 +69,7 @@
       @let passwordControl = registerForm.get('password');
       @if (passwordControl?.invalid && passwordControl?.touched) {
         <mat-error>
-          {{ getValidationMessage(passwordControl?.errors) }}
+          {{ passwordControl?.errors | validationMessage }}
         </mat-error>
       }
     </mat-form-field>
@@ -85,14 +85,14 @@
       @let confirmPasswordControl = registerForm.get('confirmPassword');
       @if (confirmPasswordControl?.invalid && confirmPasswordControl?.touched) {
         <mat-error>
-          {{ getValidationMessage(confirmPasswordControl?.errors) }}
+          {{ confirmPasswordControl?.errors | validationMessage }}
         </mat-error>
       }
     </mat-form-field>
 
     @if (registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched) {
       <mat-error class="form-error">
-        {{ getValidationMessage({passwordMismatch: true}) }}
+        {{ registerForm.errors | validationMessage }}
       </mat-error>
     }
 

@@ -8,13 +8,13 @@ import {LoginUser} from '../../models';
 import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {InfoBlockComponent} from '@shared/components';
-import {getValidationMessage} from '@core/validators';
+import {ValidationMessagePipe} from '@core/pipe';
 
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, MatError, MatFormField, MatLabel, MatInput, MatButton, InfoBlockComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, MatError, MatFormField, MatLabel, MatInput, MatButton, InfoBlockComponent, ValidationMessagePipe],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -26,8 +26,6 @@ export class LoginPageComponent {
 
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
-
-  getValidationMessage = getValidationMessage;
 
   loginForm = this.fb.nonNullable.group({
     email: this.fb.nonNullable.control('', {validators: [Validators.required, Validators.email]}),
