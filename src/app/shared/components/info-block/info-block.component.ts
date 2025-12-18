@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 type InfoBlockType = 'info' | 'error';
@@ -14,13 +13,15 @@ const ICON_MAP: Record<InfoBlockType, string> = {
   templateUrl: './info-block.component.html',
   styleUrl: './info-block.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, MatIconModule],
+  imports: [MatIconModule],
+  host: {
+    '[class]': 'infoBlockClass()'
+  }
 })
 export class InfoBlockComponent {
   type = input<InfoBlockType>('info');
 
-  get icon(): string {
-    return ICON_MAP[this.type()];
-  }
+  protected infoBlockClass = computed(() => `info-block info-block--${this.type()}`);
+  protected icon = computed(() => ICON_MAP[this.type()]);
 }
 

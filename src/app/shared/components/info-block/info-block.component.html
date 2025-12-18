@@ -1,7 +1,5 @@
-<div class="info-block" [class]="'info-block--' + type()">
-  <mat-icon class="info-block__icon">{{ icon }}</mat-icon>
-  <div class="info-block__content">
-    <ng-content></ng-content>
-  </div>
+<mat-icon class="info-block__icon">{{ icon() }}</mat-icon>
+<div class="info-block__content">
+  <ng-content></ng-content>
 </div>
 
