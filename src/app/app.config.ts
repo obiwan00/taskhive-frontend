@@ -3,7 +3,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { provideRouter } from '@angular/router';
 
-import { AuthInterceptor } from '@features/auth';
+import { AuthInterceptor } from '@core/auth';
 
 import { routes } from './app.routes';
 

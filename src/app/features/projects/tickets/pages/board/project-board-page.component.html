@@ -1,0 +1,50 @@
+<div class="board-page">
+  @if (loading()) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  }
+
+  @if (error()) {
+    <app-info-block type="error">
+      {{ error() }}
+    </app-info-block>
+  }
+
+  @if (!loading() && !error() && project()) {
+    <app-project-card
+      [project]="project()!"
+      (manageMembersClick)="onManageMembersClick()"
+      (editClick)="onEditClick()"
+      (deleteClick)="onDeleteClick()"
+    />
+
+    <div class="tickets-header">
+      <h2 class="tickets-title">Tickets</h2>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onCreateTicketClick()"
+        aria-label="Create new ticket"
+      >
+        <mat-icon>add</mat-icon>
+        Add Ticket
+      </button>
+    </div>
+
+    <app-tickets-filters
+      [assignees]="assignees()"
+      (filterChange)="onFilterChange($event)"
+    />
+
+    <app-tickets-table
+      [tickets]="tickets()"
+      [totalCount]="totalCount()"
+      [pageSize]="currentPageSize()"
+      [pageIndex]="currentPage()"
+      (rowClick)="onTicketRowClick($event)"
+      (pageChange)="onPageChange($event)"
+    />
+  }
+</div>
+

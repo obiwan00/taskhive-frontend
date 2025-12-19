@@ -1,13 +1,15 @@
 import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
-import { AuthService } from '@features/auth';
+import { AuthService } from '@core/auth';
 
 @Component({
   selector: 'app-app-header',
   imports: [
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    MatButtonModule
   ],
   templateUrl: './app-header.component.html',
   styleUrl: './app-header.component.scss',
@@ -15,7 +17,7 @@ import { AuthService } from '@features/auth';
 export class AppHeaderComponent {
   private readonly authService = inject(AuthService);
 
-  protected logout() {
+  protected logout(): void {
     this.authService.logout();
   }
 }

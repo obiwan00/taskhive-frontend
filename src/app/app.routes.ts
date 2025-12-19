@@ -2,8 +2,8 @@ import { Routes } from '@angular/router';
 
 import { AppLayoutComponent, AuthLayoutComponent } from '@layouts';
 
-import { authenticatedGuard, unauthenticatedGuard } from '@features/auth';
-import { loadProfileGuard } from '@features/profile';
+import { authenticatedGuard, unauthenticatedGuard } from '@core/auth';
+import { loadUserProfileGuard } from '@core/user';
 
 export const routes: Routes = [
   {
@@ -20,7 +20,7 @@ export const routes: Routes = [
   {
     path: 'app',
     component: AppLayoutComponent,
-    canActivate: [authenticatedGuard, loadProfileGuard],
+    canActivate: [authenticatedGuard, loadUserProfileGuard],
     children: [
       {
         path: 'profile',
@@ -28,7 +28,7 @@ export const routes: Routes = [
       },
       {
         path: 'my-tickets',
-        loadChildren: () => import('./features/my-tickets/my-tickets.routes').then(m => m.myTicketsRoutes)
+        loadChildren: () => import('./features/projects/tickets/my-tickets.routes').then(m => m.myTicketsRoutes)
       },
       {
         path: 'projects',

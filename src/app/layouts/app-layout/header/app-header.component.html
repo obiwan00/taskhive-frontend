@@ -6,6 +6,8 @@
     <li><a [routerLink]="['/app/projects']"  routerLinkActive="active-link">Projects</a></li>
   </ul>
 
-  <button (click)="logout()">logout</button>
+  <div class="header-actions">
+    <button mat-button (click)="logout()">logout</button>
+  </div>
 </header>
 

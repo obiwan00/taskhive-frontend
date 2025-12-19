@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
 
-import { ProjectBoardPageComponent } from './pages/board/project-board-page.component';
-import { ProjectMembersPageComponent } from './pages/members/project-members-page.component';
-import { ProjectsListPageComponent } from './pages/projects-list/projects-list-page.component';
-import { TicketDetailsPageComponent } from './pages/ticket-details/ticket-details-page.component';
+import { ProjectsListPageComponent } from './project/pages/projects-list/projects-list-page.component';
+import { ProjectBoardPageComponent } from './tickets/pages/board/project-board-page.component';
+import { TicketDetailsPageComponent } from './tickets/pages/ticket-details/ticket-details-page.component';
 
 export const projectsRoutes: Routes = [
   {
@@ -23,7 +22,7 @@ export const projectsRoutes: Routes = [
       },
       {
         path: 'members',
-        component: ProjectMembersPageComponent
+        loadChildren: () => import('./project-members/project-members.routes').then(m => m.projectMembersRoutes)
       },
       {
         path: '',

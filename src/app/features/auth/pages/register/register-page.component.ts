@@ -6,12 +6,12 @@ import { MatButton } from '@angular/material/button';
 import { MatError, MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
 
-import { ValidationMessagePipe } from '@core/pipe';
-import { InfoBlockComponent } from '@shared/components';
+import { RegisterUser } from '@core/auth';
+import { AuthService } from '@core/auth';
+import { ValidationMessagePipe } from '@shared/pipes';
+import { InfoBlockComponent } from '@shared/ui';
 
 import { AUTH_VALIDATION } from '../../constants';
-import { RegisterUser } from '../../models';
-import { AuthService } from '../../services';
 import { getPasswordValidators, passwordMatchValidator } from '../../validators';
 
 
