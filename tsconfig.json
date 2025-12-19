@@ -26,6 +26,7 @@
       "@features/my-tickets": ["./src/app/features/my-tickets/index.ts"],
       "@features/auth": ["./src/app/features/auth/index.ts"],
       "@features/profile": ["./src/app/features/profile/index.ts"],
+      "@permissions": ["./src/app/features/permissions/index.ts"],
       "@layouts": ["./src/app/layouts/index.ts"],
     }
   },

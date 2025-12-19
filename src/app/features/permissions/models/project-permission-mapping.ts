@@ -22,5 +22,5 @@ export const projectPermissionMapping: Record<ProjectRole, ProjectPermission[]> 
     ProjectPermission.ViewTickets,
     ProjectPermission.ViewTicketDetails,
   ],
-};
+} as const;
 
