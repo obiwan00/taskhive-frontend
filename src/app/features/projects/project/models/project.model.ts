@@ -1,5 +1,6 @@
-import { ProjectRole } from '@features/projects/shared';
 import { PaginationQuery } from '@shared/models';
+
+import { ProjectRole } from './project-role.model';
 
 
 export interface GetProjectsQuery extends PaginationQuery {

@@ -1,4 +1,4 @@
-import { ProjectRole } from '@features/projects/shared';
+import { ProjectRole } from '@features/projects/project';
 
 export interface AddProjectMember {
   email: string;

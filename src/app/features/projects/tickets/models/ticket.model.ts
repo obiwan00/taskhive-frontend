@@ -1,6 +1,6 @@
-
-import { TicketStatus } from '@features/projects/shared';
 import { PaginationQuery } from '@shared/models';
+
+import { TicketStatus } from './ticket-status.model';
 
 
 export interface GetTicketsQuery extends PaginationQuery {

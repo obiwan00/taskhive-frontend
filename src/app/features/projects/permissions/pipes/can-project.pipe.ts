@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
 
-import { ProjectRole } from '@features/projects/shared';
+import { ProjectRole } from '@features/projects/project';
 
 import { ProjectPermission } from '../models';
 import { ProjectPermissionService } from '../services';

@@ -29,7 +29,6 @@
       "@features/projects/permissions": ["./src/app/features/projects/permissions/index.ts"],
       "@features/projects/tickets": ["./src/app/features/projects/tickets/index.ts"],
       "@features/projects/project-members": ["./src/app/features/projects/project-members/index.ts"],
-      "@features/projects/shared": ["./src/app/features/projects/shared/index.ts"],
       "@layouts": ["./src/app/layouts/index.ts"],
     }
   },
