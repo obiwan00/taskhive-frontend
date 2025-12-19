@@ -9,11 +9,10 @@ import { Router, RouterModule } from '@angular/router';
 import { ValidationMessagePipe } from '@core/pipe';
 import { InfoBlockComponent } from '@shared/components';
 
+import { AUTH_VALIDATION } from '../../constants';
 import { RegisterUser } from '../../models';
 import { AuthService } from '../../services';
 import { getPasswordValidators, passwordMatchValidator } from '../../validators';
-
-
 
 
 @Component({
@@ -35,9 +34,27 @@ export class RegisterPageComponent {
   protected readonly registerForm = this.fb.nonNullable.group(
     {
       email: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.email] }),
-      firstName: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100)] }),
-      lastName: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.minLength(2), Validators.maxLength(100)] }),
-      password: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.minLength(6), ...getPasswordValidators()] }),
+      firstName: this.fb.nonNullable.control('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(AUTH_VALIDATION.NAME_MIN_LENGTH),
+          Validators.maxLength(AUTH_VALIDATION.NAME_MAX_LENGTH)
+        ]
+      }),
+      lastName: this.fb.nonNullable.control('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(AUTH_VALIDATION.NAME_MIN_LENGTH),
+          Validators.maxLength(AUTH_VALIDATION.NAME_MAX_LENGTH)
+        ]
+      }),
+      password: this.fb.nonNullable.control('', {
+        validators: [
+          Validators.required,
+          Validators.minLength(AUTH_VALIDATION.PASSWORD_MIN_LENGTH),
+          ...getPasswordValidators()
+        ]
+      }),
       confirmPassword: this.fb.nonNullable.control('', { validators: [Validators.required] }),
     },
     { validators: passwordMatchValidator }

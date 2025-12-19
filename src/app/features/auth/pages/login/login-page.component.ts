@@ -9,10 +9,9 @@ import { Router, RouterModule } from '@angular/router';
 import { ValidationMessagePipe } from '@core/pipe';
 import { InfoBlockComponent } from '@shared/components';
 
+import { AUTH_VALIDATION } from '../../constants';
 import { LoginUser } from '../../models';
 import { AuthService } from '../../services';
-
-
 
 
 @Component({
@@ -33,7 +32,12 @@ export class LoginPageComponent {
 
   protected readonly loginForm = this.fb.nonNullable.group({
     email: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.email] }),
-    password: this.fb.nonNullable.control('', { validators: [Validators.required, Validators.minLength(6)] })
+    password: this.fb.nonNullable.control('', {
+      validators: [
+        Validators.required,
+        Validators.minLength(AUTH_VALIDATION.PASSWORD_MIN_LENGTH),
+        Validators.maxLength(AUTH_VALIDATION.PASSWORD_MAX_LENGTH)]
+    })
   });
 
   protected onSubmit(): void {
