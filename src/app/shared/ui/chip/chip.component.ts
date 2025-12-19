@@ -17,7 +17,7 @@ export class ChipComponent {
   roundingType = input<ChipRoundingType>('light');
 
   protected chipClass = computed(() =>
-    `chip chip--${this.color()} chip--rounded-${this.roundingType()}`
+    `chip chip--color-${this.color()} chip--rounding-${this.roundingType()}`
   );
 }
 

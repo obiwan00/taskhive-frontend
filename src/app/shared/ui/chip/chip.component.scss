@@ -7,40 +7,40 @@
   line-height: 1.25rem;
   white-space: nowrap;
 
-  &.chip--rounded-light {
+  &.chip--rounding-light {
     border-radius: 8px;
   }
 
-  &.chip--rounded-full {
+  &.chip--rounding-full {
     border-radius: 100px;
   }
 
-  &.chip--green {
+  &.chip--color-green {
     background-color: var(--color-success);
     color: var(--color-bg);
   }
 
-  &.chip--red {
+  &.chip--color-red {
     background-color: var(--color-error);
     color: var(--color-bg);
   }
 
-  &.chip--blue {
+  &.chip--color-blue {
     background-color: var(--color-primary);
     color: var(--color-bg);
   }
 
-  &.chip--yellow {
+  &.chip--color-yellow {
     background-color: var(--color-warning);
     color: var(--color-text);
   }
 
-  &.chip--purple {
+  &.chip--color-purple {
     background-color: var(--color-secondary);
     color: var(--color-bg);
   }
 
-  &.chip--gray {
+  &.chip--color-gray {
     background-color: var(--color-gray-200);
     color: var(--color-text);
   }
