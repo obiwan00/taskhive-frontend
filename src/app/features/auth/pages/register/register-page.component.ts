@@ -88,7 +88,7 @@ export class RegisterPageComponent {
     this.errorMessage.set(
       errorResponse?.message ||
       errorResponse?.detail ||
-      'Registration failed. Please try again.'
+      'Registration failed. Please try again'
     );
   }
 }

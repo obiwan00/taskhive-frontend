@@ -67,7 +67,7 @@ export class LoginPageComponent {
     this.errorMessage.set(
       errorResponse?.message ||
       errorResponse?.detail ||
-      'Login failed. Please try again.'
+      'Login failed. Please try again'
     );
   }
 }
