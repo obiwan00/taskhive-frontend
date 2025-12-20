@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,15 +8,17 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { forkJoin } from 'rxjs';
+import { filter, switchMap } from 'rxjs/operators';
 
+import { ProjectAssigneesStateService } from '@features/projects/assignees';
 import {
-  ProjectAssignee,
+  CanProjectPipe,
   ProjectCardComponent,
-  ProjectDetails,
   ProjectDialogComponent,
   ProjectDialogData,
+  ProjectPermission,
   ProjectsApiService,
+  ProjectStateService,
   UpdateProject
 } from '@features/projects/project';
 import { ConfirmationDialogComponent, ConfirmDialogData, InfoBlockComponent } from '@shared/ui';
@@ -31,9 +33,7 @@ import {
 } from '../../components';
 import { CreateTicket, GetTicketsQuery, TicketBrief } from '../../models';
 
-interface BoardState {
-  project: ProjectDetails | null;
-  assignees: ProjectAssignee[];
+interface BoardTicketsState {
   tickets: TicketBrief[];
   totalCount: number;
   loading: boolean;
@@ -52,42 +52,58 @@ interface BoardState {
     InfoBlockComponent,
     ProjectCardComponent,
     TicketsFiltersComponent,
-    TicketsTableComponent
+    TicketsTableComponent,
+    CanProjectPipe
   ]
 })
-export class ProjectBoardPageComponent {
+export class ProjectBoardPageComponent implements OnInit {
   private readonly projectsApi = inject(ProjectsApiService);
   private readonly ticketsApi = inject(TicketsApiService);
+  private readonly projectStateService = inject(ProjectStateService);
+  private readonly projectAssigneesStateService = inject(ProjectAssigneesStateService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
 
-  private readonly projectId = this.route.snapshot.paramMap.get('projectId') || '';
+  private readonly projectId = computed(() => {
+    const id = this.route.snapshot.paramMap.get('projectId');
+    if (!id) throw new Error('projectId route param is required');
+    return id;
+  });
 
-  private readonly state = signal<BoardState>({
-    project: null,
-    assignees: [],
+  private readonly ticketsQuery = computed<GetTicketsQuery>(() => ({
+    page: this.currentPage() + 1,
+    pageSize: this.currentPageSize(),
+    search: this.currentFilters().search,
+    status: this.currentFilters().status?.toString(),
+    assigneeId: this.currentFilters().assigneeId,
+  }));
+
+  protected readonly ProjectPermission = ProjectPermission;
+
+  protected readonly ticketsState = signal<BoardTicketsState>({
     tickets: [],
     totalCount: 0,
     loading: false,
     error: null
   });
 
-  protected readonly project = computed(() => this.state().project);
-  protected readonly assignees = computed(() => this.state().assignees);
-  protected readonly tickets = computed(() => this.state().tickets);
-  protected readonly totalCount = computed(() => this.state().totalCount);
-  protected readonly loading = computed(() => this.state().loading);
-  protected readonly error = computed(() => this.state().error);
-
   private readonly currentFilters = signal<TicketsFilterQuery>({});
   protected readonly currentPage = signal(0);
   protected readonly currentPageSize = signal(20);
 
-  constructor() {
-    this.loadInitialData();
+  protected readonly projectDetails = computed(() => this.projectStateService.project());
+  protected readonly projectDetailsLoading = computed(() => this.projectStateService.loading());
+
+  protected readonly assignees = computed(() => this.projectAssigneesStateService.assignees());
+  protected readonly assigneesLoading = computed(() => this.projectAssigneesStateService.loading());
+
+  ngOnInit(): void {
+    this.loadProjectDetails();
+    this.loadAssignees();
+    this.loadTickets();
   }
 
   protected onFilterChange(filters: TicketsFilterQuery): void {
@@ -103,15 +119,16 @@ export class ProjectBoardPageComponent {
   }
 
   protected onTicketRowClick(ticket: TicketBrief): void {
-    this.router.navigate(['/app/projects', this.projectId, 'tickets', ticket.id]);
+    this.router.navigate(['/app/projects', this.projectId(), 'tickets', ticket.id]);
   }
 
   protected onManageMembersClick(): void {
-    this.router.navigate(['/app/projects', this.projectId, 'members']);
+    this.router.navigate(['/app/projects', this.projectId(), 'members']);
   }
 
-  protected onEditClick(): void {
-    const project = this.state().project;
+  protected onProjectEditClick(): void {
+    const project = this.projectDetails();
+
     if (!project) return;
 
     const dialogRef = this.dialog.open<ProjectDialogComponent, ProjectDialogData, UpdateProject>(
@@ -123,20 +140,24 @@ export class ProjectBoardPageComponent {
     );
 
     dialogRef.afterClosed()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(result => {
-        if (result) {
-          this.updateProject(result);
-        }
-      });
+      .pipe(
+        filter(v => !!v),
+        switchMap((result) => this.projectStateService.update(result)),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
   }
 
   protected onCreateTicketClick(): void {
+    const assignees = this.assignees();
+
+    if (!assignees) return;
+
     const dialogRef = this.dialog.open<CreateTicketDialogComponent, CreateTicketDialogData, CreateTicket>(
       CreateTicketDialogComponent,
       {
         width: '500px',
-        data: { assignees: this.state().assignees }
+        data: { assignees }
       }
     );
 
@@ -149,7 +170,7 @@ export class ProjectBoardPageComponent {
       });
   }
 
-  protected onDeleteClick(): void {
+  protected onProjectDeleteClick(): void {
     const dialogRef = this.dialog.open<ConfirmationDialogComponent, ConfirmDialogData, boolean>(
       ConfirmationDialogComponent,
       {
@@ -172,102 +193,93 @@ export class ProjectBoardPageComponent {
       });
   }
 
-  private loadInitialData(): void {
-    this.state.update(state => ({ ...state, loading: true, error: null }));
-
-    forkJoin({
-      project: this.projectsApi.getDetails(this.projectId),
-      assignees: this.projectsApi.getAssignees(this.projectId)
-    })
+  private loadProjectDetails(): void {
+    this.projectStateService.init(this.projectId())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: ({ project, assignees }) => {
-          this.state.update(state => ({
-            ...state,
-            project,
-            assignees: assignees.items,
-            loading: false
-          }));
-          this.loadTickets();
-        },
         error: (err) => {
-          this.state.update(state => ({
-            ...state,
-            loading: false,
-            error: 'Failed to load project details. Please try again.'
-          }));
+          this.router.navigate(['/app/projects/list']);
+          this.snackBar.open('Failed to load project details. Please try again', 'Close');
           console.error('Error loading project details:', err);
         }
       });
   }
 
   private loadTickets(): void {
-    const query: GetTicketsQuery = {
-      page: this.currentPage() + 1,
-      pageSize: this.currentPageSize(),
-      search: this.currentFilters().search,
-      status: this.currentFilters().status?.toString(),
-      assigneeId: this.currentFilters().assigneeId,
-    };
+    const query = this.ticketsQuery();
 
-    this.ticketsApi.getPagedList(this.projectId, query)
+    this.ticketsState.update(state => ({ ...state, loading: true, error: null }));
+
+    this.ticketsApi.getPagedList(this.projectId(), query)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (result) => {
-          this.state.update(state => ({
+          this.ticketsState.update(state => ({
             ...state,
+            loading: false,
             tickets: result.items,
             totalCount: result.pagination.totalCount
           }));
         },
         error: (err) => {
           console.error('Error loading tickets:', err);
+          this.ticketsState.update(() => ({
+            tickets: [],
+            totalCount: 0,
+            loading: false,
+            error: 'Failed to load tickets. Please try again later',
+          }));
         }
       });
   }
 
-  private updateProject(data: UpdateProject): void {
-    this.projectsApi.update(this.projectId, data)
+  private loadAssignees() {
+    this.projectAssigneesStateService.init(this.projectId())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (updatedProject) => {
-          this.state.update(state => ({
-            ...state,
-            project: updatedProject
-          }));
-        },
         error: (err) => {
-          console.error('Error updating project:', err);
-          this.snackBar.open('Failed to update project. Please try again.', 'Close', { duration: 5000 });
+          console.error('Error loading assignees:', err);
+          this.snackBar.open('Failed to load assignees. Please try again later', 'Close');
         }
       });
   }
 
   private createTicket(data: CreateTicket): void {
-    this.ticketsApi.create(this.projectId, data)
+    this.ticketsApi.create(this.projectId(), data)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
-          this.loadTickets();
+        next: (ticket) => {
+          this.openCreateTicketNotification(ticket.id);
         },
         error: (err) => {
           console.error('Error creating ticket:', err);
-          this.snackBar.open('Failed to create ticket. Please try again.', 'Close', { duration: 5000 });
+          this.snackBar.open('Failed to create ticket. Please try again', 'Close');
         }
       });
   }
 
   private deleteProject(): void {
-    this.projectsApi.delete(this.projectId)
+    this.projectsApi.delete(this.projectId())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
           this.router.navigate(['/app/projects']);
+          this.snackBar.open('Project deleted successfully', 'Close');
         },
         error: (err) => {
           console.error('Error deleting project:', err);
-          this.snackBar.open('Failed to delete project. Please try again.', 'Close', { duration: 5000 });
+          this.snackBar.open('Failed to delete project. Please try again', 'Close');
         }
+      });
+  }
+
+  private openCreateTicketNotification(ticketId: string) {
+    const snackBarRef = this.snackBar.open('Ticket created successfully', 'Open');
+
+    snackBarRef.onAction()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.router.navigate(['/app/projects', this.projectId(), 'tickets', ticketId]);
       });
   }
 }

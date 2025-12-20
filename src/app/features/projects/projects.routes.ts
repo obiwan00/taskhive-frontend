@@ -1,8 +1,12 @@
 import { Routes } from '@angular/router';
 
+import { ProjectAssigneesStateService } from '@features/projects/assignees';
+import { ProjectStateService } from '@features/projects/project';
+
 import { ProjectsListPageComponent } from './project/pages/projects-list/projects-list-page.component';
 import { ProjectBoardPageComponent } from './tickets/pages/board/project-board-page.component';
 import { TicketDetailsPageComponent } from './tickets/pages/ticket-details/ticket-details-page.component';
+
 
 export const projectsRoutes: Routes = [
   {
@@ -11,6 +15,7 @@ export const projectsRoutes: Routes = [
   },
   {
     path: ':projectId',
+    providers: [ProjectStateService, ProjectAssigneesStateService],
     children: [
       {
         path: 'board',
@@ -22,7 +27,7 @@ export const projectsRoutes: Routes = [
       },
       {
         path: 'members',
-        loadChildren: () => import('./project-members/project-members.routes').then(m => m.projectMembersRoutes)
+        loadChildren: () => import('./members/project-members.routes').then(m => m.projectMembersRoutes)
       },
       {
         path: '',

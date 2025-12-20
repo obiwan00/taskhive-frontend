@@ -12,7 +12,7 @@ export const materialConfigurationProviders: Provider[] = [
     useValue: {
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      duration: 3000
+      duration: 5000
     }
   },
 ];

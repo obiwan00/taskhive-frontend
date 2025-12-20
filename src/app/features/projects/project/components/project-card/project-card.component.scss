@@ -1,0 +1,45 @@
+.project-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    gap: 16px;
+  }
+
+  &__header-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__header-right {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  &__body {
+    color: var(--color-text-secondary);
+  }
+
+  &__description {
+    margin: 0;
+    line-height: 1.5;
+  }
+}

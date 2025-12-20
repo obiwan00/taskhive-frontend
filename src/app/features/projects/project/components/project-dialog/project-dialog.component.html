@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="project-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Title</mat-label>
+      <input
+        matInput
+        formControlName="title"
+        placeholder="Enter project title"
+        aria-label="Project title"
+      />
+      @let titleControl = form.get('title');
+      @if (titleControl?.invalid && titleControl?.touched) {
+        <mat-error>{{ titleControl?.errors | validationMessage }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        placeholder="Enter project description"
+        rows="4"
+        aria-label="Project description"
+      ></textarea>
+      @let descriptionControl = form.get('description');
+      @if (descriptionControl?.invalid && descriptionControl?.touched) {
+        <mat-error>{{ descriptionControl?.errors | validationMessage }}</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSave()"
+    [disabled]="form.invalid"
+  >
+    {{ isEditMode ? 'Save Changes' : 'Create Project' }}
+  </button>
+</mat-dialog-actions>

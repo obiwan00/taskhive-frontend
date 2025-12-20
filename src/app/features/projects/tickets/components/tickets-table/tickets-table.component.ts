@@ -5,40 +5,39 @@ import { MatTableModule } from '@angular/material/table';
 
 import { InfoBlockComponent } from '@shared/ui';
 
-import { ProjectBrief } from '../../models';
-import { ProjectRoleComponent } from '../project-role';
-
+import { TicketBrief } from '../../models';
+import { TicketStatusComponent } from '../ticket-status';
 
 @Component({
-  selector: 'app-projects-table',
-  templateUrl: './projects-table.component.html',
-  styleUrl: './projects-table.component.scss',
+  selector: 'app-tickets-table',
+  templateUrl: './tickets-table.component.html',
+  styleUrl: './tickets-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     DatePipe,
     MatTableModule,
     MatPaginatorModule,
-    ProjectRoleComponent,
+    TicketStatusComponent,
     InfoBlockComponent
   ]
 })
-export class ProjectsTableComponent {
-  readonly projects = input.required<ProjectBrief[]>();
+export class TicketsTableComponent {
+  readonly tickets = input.required<TicketBrief[]>();
   readonly totalCount = input.required<number>();
   readonly pageSize = input<number>(20);
   readonly pageIndex = input<number>(0);
 
-  readonly rowClick = output<ProjectBrief>();
+  readonly rowClick = output<TicketBrief>();
   readonly pageChange = output<PageEvent>();
 
-  protected readonly displayedColumns = ['project', 'role', 'createdAt', 'updatedAt'];
+  protected readonly displayedColumns = ['title', 'status', 'assignee', 'createdAt', 'updatedAt'];
 
-  protected onRowClick(project: ProjectBrief): void {
-    this.rowClick.emit(project);
+
+  protected onRowClick(ticket: TicketBrief): void {
+    this.rowClick.emit(ticket);
   }
 
   protected onPageChange(event: PageEvent): void {
     this.pageChange.emit(event);
   }
 }
-

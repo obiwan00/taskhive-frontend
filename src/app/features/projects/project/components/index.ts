@@ -1,3 +1,4 @@
-export * from './projects-filters/projects-filters.component';
-export * from './projects-table/projects-table.component';
-
+export * from './project-dialog';
+export * from './projects-filters';
+export * from './projects-table';
+export * from './project-card';

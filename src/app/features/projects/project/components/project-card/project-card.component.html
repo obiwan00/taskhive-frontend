@@ -1,0 +1,43 @@
+<div class="project-card">
+  <div class="project-card__header">
+    <div class="project-card__header-left">
+      <h2 class="project-card__title">{{ project().title }}</h2>
+      <app-project-role [role]="project().myRole" />
+    </div>
+    <div class="project-card__header-right">
+      @if (project().myRole | canProject: ProjectPermission.ViewProjectMembers) {
+        <button
+          mat-icon-button
+          (click)="onManageMembersClick()"
+          aria-label="Manage members"
+          matTooltip="Manage members"
+        >
+          <mat-icon>group</mat-icon>
+        </button>
+      }
+      @if (project().myRole | canProject: ProjectPermission.UpdateProject) {
+        <button
+          mat-icon-button
+          (click)="onEditClick()"
+          aria-label="Edit project"
+          matTooltip="Edit project"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      }
+      @if (project().myRole | canProject: ProjectPermission.DeleteProject) {
+        <button
+          mat-icon-button
+          (click)="onDeleteClick()"
+          aria-label="Delete project"
+          matTooltip="Delete project"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      }
+    </div>
+  </div>
+  <div class="project-card__body">
+    <p class="project-card__description">{{ project().description }}</p>
+  </div>
+</div>

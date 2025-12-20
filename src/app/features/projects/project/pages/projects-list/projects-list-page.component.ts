@@ -132,7 +132,7 @@ export class ProjectsListPageComponent {
             error: 'Failed to load projects. Please try again'
           }));
           console.error('Error loading projects:', err);
-          this.snackBar.open('Failed to load project. Please try again', 'Close', { duration: 5000 });
+          this.snackBar.open('Failed to load project. Please try again', 'Close');
         }
       });
   }
@@ -146,7 +146,7 @@ export class ProjectsListPageComponent {
         },
         error: (err: unknown) => {
           console.error('Error creating project:', err);
-          this.snackBar.open('Failed to create project. Please try again', 'Close', { duration: 5000 });
+          this.snackBar.open('Failed to create project. Please try again', 'Close');
         }
       });
   }

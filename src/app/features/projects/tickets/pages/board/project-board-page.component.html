@@ -1,26 +1,19 @@
 <div class="board-page">
-  @if (loading()) {
-    <div class="loading-container">
-      <mat-spinner diameter="50"></mat-spinner>
-    </div>
-  }
-
-  @if (error()) {
-    <app-info-block type="error">
-      {{ error() }}
-    </app-info-block>
-  }
-
-  @if (!loading() && !error() && project()) {
+  @let projectDetailsItem = projectDetails();
+  @if (!projectDetailsLoading() && projectDetailsItem) {
     <app-project-card
-      [project]="project()!"
+      [project]="projectDetailsItem"
       (manageMembersClick)="onManageMembersClick()"
-      (editClick)="onEditClick()"
-      (deleteClick)="onDeleteClick()"
+      (editClick)="onProjectEditClick()"
+      (deleteClick)="onProjectDeleteClick()"
     />
+  } @else {
+    project details loading...
+  }
 
-    <div class="tickets-header">
-      <h2 class="tickets-title">Tickets</h2>
+  <div class="tickets-header">
+    <h2 class="tickets-title">Tickets</h2>
+    @if (projectDetails()?.myRole | canProject: ProjectPermission.CreateTicket) {
       <button
         mat-raised-button
         color="primary"
@@ -30,16 +23,25 @@
         <mat-icon>add</mat-icon>
         Add Ticket
       </button>
-    </div>
+    }
+  </div>
 
-    <app-tickets-filters
-      [assignees]="assignees()"
-      (filterChange)="onFilterChange($event)"
-    />
+  <app-tickets-filters
+    [assignees]="assignees()"
+    [assigneesLoading]="assigneesLoading()"
+    (filterChange)="onFilterChange($event)"
+  />
 
+  @if (ticketsState().error) {
+    <app-info-block type="error">
+      <p>{{ ticketsState().error }}</p>
+    </app-info-block>
+  } @else if (ticketsState().loading) {
+    tickets loading...
+  } @else {
     <app-tickets-table
-      [tickets]="tickets()"
-      [totalCount]="totalCount()"
+      [tickets]="ticketsState().tickets"
+      [totalCount]="ticketsState().totalCount"
       [pageSize]="currentPageSize()"
       [pageIndex]="currentPage()"
       (rowClick)="onTicketRowClick($event)"

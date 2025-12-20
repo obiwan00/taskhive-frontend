@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>Create Ticket</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="ticket-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Title</mat-label>
+      <input
+        matInput
+        formControlName="title"
+        placeholder="Enter ticket title"
+        aria-label="Ticket title"
+      />
+      @if (form.get('title')?.invalid && form.get('title')?.touched) {
+        <mat-error>{{ form.get('title')?.errors | validationMessage }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        placeholder="Enter ticket description"
+        rows="4"
+        aria-label="Ticket description"
+      ></textarea>
+      @if (form.get('description')?.invalid && form.get('description')?.touched) {
+        <mat-error>{{ form.get('description')?.errors | validationMessage }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Assignee</mat-label>
+      <mat-select formControlName="assigneeId" aria-label="Select assignee">
+        <mat-option [value]="">Select an assignee</mat-option>
+        @for (assignee of assignees; track assignee.userId) {
+          <mat-option [value]="assignee.userId">
+            {{ assignee.firstName }} {{ assignee.lastName }} ({{ assignee.email }})
+          </mat-option>
+        }
+      </mat-select>
+      @if (form.get('assigneeId')?.invalid && form.get('assigneeId')?.touched) {
+        <mat-error>{{ form.get('assigneeId')?.errors | validationMessage }}</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onCreate()"
+    [disabled]="form.invalid"
+  >
+    Create Ticket
+  </button>
+</mat-dialog-actions>
