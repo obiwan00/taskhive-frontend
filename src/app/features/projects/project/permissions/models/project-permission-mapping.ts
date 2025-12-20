@@ -1,4 +1,4 @@
-import { ProjectRole } from '@features/projects/project';
+import { ProjectRole } from '../../models';
 
 import { ProjectPermission } from './project-permission.model';
 

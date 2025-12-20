@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
+import { ProjectRole } from '../../models';
+import { ProjectPermission, projectPermissionMapping } from '../models';
 
-import { ProjectRole } from '../../project/models/project-role.model';
-import { projectPermissionMapping, ProjectPermission } from '../models';
 
 @Injectable({
   providedIn: 'root'
