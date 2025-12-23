@@ -1,0 +1,35 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  overflow: hidden;
+  cursor: pointer;
+  max-width: 100%;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--color-primary);
+
+    .copy-icon {
+      color: var(--color-primary);
+    }
+  }
+}
+
+.copy-text-content {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
+}
+
+.copy-icon {
+  flex-shrink: 0;
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-secondary);
+  transition: color 0.2s;
+}
+
