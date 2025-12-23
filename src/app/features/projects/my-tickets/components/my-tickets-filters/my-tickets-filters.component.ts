@@ -9,10 +9,9 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
+import { TicketStatus, TicketStatusComponent } from '@features/projects/tickets';
 import { ValidationMessagePipe } from '@shared/pipes';
 
-import { TicketStatus } from '../../models';
-import { TicketStatusComponent } from '../ticket-status';
 
 export interface MyTicketsFilterQuery {
   search?: string;

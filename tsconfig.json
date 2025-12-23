@@ -25,10 +25,11 @@
       "@shared/utils": ["./src/app/shared/utils/index.ts"],
       "@features/auth": ["./src/app/features/auth/index.ts"],
       "@features/profile": ["./src/app/features/profile/index.ts"],
+      "@features/projects/assignees": ["./src/app/features/projects/assignees/index.ts"],
+      "@features/projects/members": ["./src/app/features/projects/members/index.ts"],
+      "@features/projects/my-tickets": ["./src/app/features/projects/my-tickets/index.ts"],
       "@features/projects/project": ["./src/app/features/projects/project/index.ts"],
       "@features/projects/tickets": ["./src/app/features/projects/tickets/index.ts"],
-      "@features/projects/members": ["./src/app/features/projects/members/index.ts"],
-      "@features/projects/assignees": ["./src/app/features/projects/assignees/index.ts"],
       "@layouts": ["./src/app/layouts/index.ts"],
     }
   },

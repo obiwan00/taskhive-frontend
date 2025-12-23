@@ -8,8 +8,9 @@ import { Router } from '@angular/router';
 import { InfoBlockComponent } from '@shared/ui';
 
 import { MyTicketsApiService } from '../../api';
-import { MyTicketsFiltersComponent, MyTicketsFilterQuery, MyTicketsTableComponent } from '../../components';
+import { MyTicketsFilterQuery, MyTicketsFiltersComponent, MyTicketsTableComponent } from '../../components';
 import { GetMyTicketsQuery, MyTicket } from '../../models';
+
 
 interface MyTicketsState {
   tickets: MyTicket[];

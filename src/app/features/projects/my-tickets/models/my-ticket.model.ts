@@ -1,7 +1,5 @@
+import { TicketStatus } from '@features/projects/tickets';
 import { PaginationQuery } from '@shared/models';
-
-import { TicketStatus } from './ticket-status.model';
-
 
 export interface GetMyTicketsQuery extends PaginationQuery {
   search?: string;

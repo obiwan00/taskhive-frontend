@@ -24,7 +24,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'my-tickets',
-        loadChildren: () => import('./features/projects/my-tickets.routes').then(m => m.myTicketsRoutes)
+        loadChildren: () => import('./features/projects/my-tickets/my-tickets.routes').then(m => m.myTicketsRoutes)
       },
       {
         path: 'projects',

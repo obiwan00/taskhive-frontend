@@ -4,10 +4,10 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 
+import { TicketStatusComponent } from '@features/projects/tickets';
 import { InfoBlockComponent } from '@shared/ui';
 
 import { MyTicket } from '../../models';
-import { TicketStatusComponent } from '../ticket-status';
 
 @Component({
   selector: 'app-my-tickets-table',
