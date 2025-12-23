@@ -1,5 +1,34 @@
 <div class="my-tickets-page">
-  <h1>My Tickets</h1>
-  <p>My tickets page placeholder</p>
+  <div class="page-header">
+    <div class="page-header-text">
+      <h1 class="page-title">My Tickets</h1>
+      <p class="page-subtitle">View and manage all tickets assigned to you across all projects</p>
+    </div>
+  </div>
+
+  <app-my-tickets-filters (filterChange)="onFilterChange($event)"/>
+
+  @if (loading()) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  }
+
+  @if (error()) {
+    <app-info-block type="error">
+      {{ error() }}
+    </app-info-block>
+  }
+
+  @if (!loading() && !error()) {
+    <app-my-tickets-table
+      [tickets]="tickets()"
+      [totalCount]="totalCount()"
+      [pageSize]="currentPageSize()"
+      [pageIndex]="currentPage()"
+      (rowClick)="onRowClick($event)"
+      (pageChange)="onPageChange($event)"
+    />
+  }
 </div>
 
