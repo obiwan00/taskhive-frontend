@@ -131,9 +131,7 @@ export class TicketDetailsPageComponent implements OnInit {
   protected readonly assignees = computed(() => this.projectAssigneesStateService.assignees());
   protected readonly assigneesLoading = computed(() => this.projectAssigneesStateService.loading());
 
-  protected readonly statusOptions = Object.entries(TicketStatus).map(([_, value]) => ({
-    value,
-  }));
+  protected readonly statusOptions = Object.values(TicketStatus).map((value) => ({ value }));
 
   // TODO fix race condition when status and assignees changed
   ngOnInit(): void {

@@ -2,14 +2,21 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 
 import { ChipColor, ChipComponent } from '@shared/ui';
 
-import { TICKET_STATUS_LABELS, TicketStatus } from '../../models';
-
+import { TicketStatus } from '../../models';
 
 const TICKET_STATUS_COLORS: Record<TicketStatus, ChipColor> = {
   [TicketStatus.Done]: 'green',
   [TicketStatus.InProgress]: 'blue',
   [TicketStatus.Todo]: 'gray',
 };
+
+
+const TICKET_STATUS_LABELS: Record<TicketStatus, string> = {
+  [TicketStatus.Todo]: 'To Do',
+  [TicketStatus.InProgress]: 'In Progress',
+  [TicketStatus.Done]: 'Done',
+};
+
 
 @Component({
   selector: 'app-ticket-status',

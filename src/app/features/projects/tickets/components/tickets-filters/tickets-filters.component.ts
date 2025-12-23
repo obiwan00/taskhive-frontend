@@ -14,7 +14,7 @@ import { ProjectAssignee } from '@features/projects/assignees';
 import { InvokePipe, ValidationMessagePipe } from '@shared/pipes';
 import { UserInfoComponent } from '@shared/ui';
 
-import { TICKET_STATUS_LABELS, TicketStatus } from '../../models';
+import { TicketStatus } from '../../models';
 import { TicketStatusComponent } from '../ticket-status';
 
 export interface TicketsFilterQuery {
@@ -56,11 +56,7 @@ export class TicketsFiltersComponent {
   protected readonly statusControl = new FormControl<TicketStatus | null>(null);
   protected readonly assigneeControl = new FormControl<string | null>(null);
 
-  protected readonly availableStatuses = [
-    { value: TicketStatus.Todo, label: TICKET_STATUS_LABELS[TicketStatus.Todo] },
-    { value: TicketStatus.InProgress, label: TICKET_STATUS_LABELS[TicketStatus.InProgress] },
-    { value: TicketStatus.Done, label: TICKET_STATUS_LABELS[TicketStatus.Done] }
-  ];
+  protected readonly availableStatuses = Object.values(TicketStatus).map((value) => ({ value }));
 
   constructor() {
     this.subscribeToSearchChanges();
