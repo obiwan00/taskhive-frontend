@@ -23,10 +23,6 @@ export const routes: Routes = [
     canActivate: [authenticatedGuard, loadUserProfileGuard],
     children: [
       {
-        path: 'profile',
-        loadChildren: () => import('./features/profile/profile.routes').then(m => m.profileRoutes)
-      },
-      {
         path: 'my-tickets',
         loadChildren: () => import('./features/projects/my-tickets.routes').then(m => m.myTicketsRoutes)
       },
