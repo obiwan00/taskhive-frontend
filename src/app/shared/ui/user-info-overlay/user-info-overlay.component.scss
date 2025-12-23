@@ -1,0 +1,36 @@
+:host {
+  display: grid;
+  grid-template-columns: 1fr 250px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-gray-200);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.avatar {
+  flex-shrink: 0;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.email {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  max-width: 100%;
+}

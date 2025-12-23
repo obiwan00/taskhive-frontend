@@ -1,0 +1,17 @@
+<app-avatar
+  class="avatar"
+  [firstName]="firstName()"
+  [lastName]="lastName()"
+/>
+<div class="details">
+  <div class="name">
+    {{ firstName() }} {{ lastName() }}
+  </div>
+  <app-copy-text
+    class="email"
+    [value]="email()"
+  >
+    {{ email() }}
+  </app-copy-text>
+</div>
+
