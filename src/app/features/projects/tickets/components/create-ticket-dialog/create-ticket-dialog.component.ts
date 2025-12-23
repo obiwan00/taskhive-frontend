@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { ProjectAssignee } from '@features/projects/assignees';
 import { ValidationMessagePipe } from '@shared/pipes';
+import { UserInfoComponent } from '@shared/ui';
 
 import { TICKET_VALIDATION } from '../../constants';
 import { CreateTicket } from '../../models';
@@ -29,7 +30,8 @@ export interface CreateTicketDialogData {
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    ValidationMessagePipe
+    ValidationMessagePipe,
+    UserInfoComponent,
   ]
 })
 export class CreateTicketDialogComponent {
@@ -38,25 +40,26 @@ export class CreateTicketDialogComponent {
   private readonly fb = inject(FormBuilder);
 
   protected readonly assignees = this.data.assignees;
+  protected readonly selectedAssignee = signal<ProjectAssignee | null>(null);
 
   protected readonly form = this.fb.group({
-    title: [
+    title: this.fb.nonNullable.control(
       '',
       [
         Validators.required,
         Validators.minLength(TICKET_VALIDATION.TITLE_MIN_LENGTH),
         Validators.maxLength(TICKET_VALIDATION.TITLE_MAX_LENGTH)
       ]
-    ],
-    description: [
+    ),
+    description: this.fb.nonNullable.control(
       '',
       [
         Validators.required,
         Validators.minLength(TICKET_VALIDATION.DESCRIPTION_MIN_LENGTH),
         Validators.maxLength(TICKET_VALIDATION.DESCRIPTION_MAX_LENGTH)
       ]
-    ],
-    assigneeId: ['', [Validators.required]]
+    ),
+    assigneeId: this.fb.nonNullable.control('', [Validators.required])
   });
 
   protected onCreate(): void {
@@ -76,5 +79,12 @@ export class CreateTicketDialogComponent {
 
   protected onCancel(): void {
     this.dialogRef.close();
+  }
+
+  protected updateSelectedAssignee(): void {
+    const assigneeId = this.form.controls.assigneeId.value;
+    const selectedAssignee = this.assignees.find(a => a.userId === assigneeId) ?? null;
+
+    this.selectedAssignee.set(selectedAssignee);
   }
 }

@@ -2,7 +2,7 @@
 
 <mat-dialog-content>
   <form [formGroup]="form" class="ticket-form">
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field class="full-width">
       <mat-label>Title</mat-label>
       <input
         matInput
@@ -10,12 +10,12 @@
         placeholder="Enter ticket title"
         aria-label="Ticket title"
       />
-      @if (form.get('title')?.invalid && form.get('title')?.touched) {
-        <mat-error>{{ form.get('title')?.errors | validationMessage }}</mat-error>
+      @if (form.controls.title.invalid && form.controls.title.touched) {
+        <mat-error>{{ form.controls.title.errors | validationMessage }}</mat-error>
       }
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field class="full-width">
       <mat-label>Description</mat-label>
       <textarea
         matInput
@@ -24,23 +24,42 @@
         rows="4"
         aria-label="Ticket description"
       ></textarea>
-      @if (form.get('description')?.invalid && form.get('description')?.touched) {
-        <mat-error>{{ form.get('description')?.errors | validationMessage }}</mat-error>
+      @if (form.controls.description.invalid && form.controls.description.touched) {
+        <mat-error>{{ form.controls.description.errors | validationMessage }}</mat-error>
       }
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field class="full-width">
       <mat-label>Assignee</mat-label>
-      <mat-select formControlName="assigneeId" aria-label="Select assignee">
+      <mat-select
+        aria-label="Select assignee"
+        formControlName="assigneeId"
+        (selectionChange)="updateSelectedAssignee()"
+      >
+        <mat-select-trigger>
+          @if (selectedAssignee(); as selectedAssignee) {
+            <app-user-info
+              [firstName]="selectedAssignee.firstName"
+              [lastName]="selectedAssignee.lastName"
+              [email]="selectedAssignee.email"
+              [showDetailsOverlay]="false"/>
+          } @else {
+            Select an assignee
+          }
+        </mat-select-trigger>
         <mat-option [value]="">Select an assignee</mat-option>
         @for (assignee of assignees; track assignee.userId) {
           <mat-option [value]="assignee.userId">
-            {{ assignee.firstName }} {{ assignee.lastName }} ({{ assignee.email }})
+            <app-user-info
+              [firstName]="assignee.firstName"
+              [lastName]="assignee.lastName"
+              [email]="assignee.email"
+              [showDetailsOverlay]="false"/>
           </mat-option>
         }
       </mat-select>
-      @if (form.get('assigneeId')?.invalid && form.get('assigneeId')?.touched) {
-        <mat-error>{{ form.get('assigneeId')?.errors | validationMessage }}</mat-error>
+      @if (form.controls.assigneeId.invalid && form.controls.assigneeId.touched) {
+        <mat-error>{{ form.controls.assigneeId.errors | validationMessage }}</mat-error>
       }
     </mat-form-field>
   </form>
