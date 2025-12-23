@@ -1,13 +1,29 @@
 <header>
-  <div>header placeholder</div>
+  <app-logo [size]="'medium'"/>
 
   <ul class="links">
+    <li><a [routerLink]="['/app/projects']" routerLinkActive="active-link">Projects</a></li>
     <li><a [routerLink]="['/app/my-tickets']" routerLinkActive="active-link">My tickets</a></li>
-    <li><a [routerLink]="['/app/projects']"  routerLinkActive="active-link">Projects</a></li>
   </ul>
 
   <div class="header-actions">
-    <button mat-button (click)="logout()">logout</button>
+    @if (userProfile(); as userProfile) {
+      <app-user-info
+        [firstName]="userProfile.firstName"
+        [lastName]="userProfile.lastName"
+        [email]="userProfile.email"
+        [showEmail]="true"
+        [showOverlay]="false"
+      />
+    }
+    <button
+      mat-icon-button
+      (click)="logout()"
+      aria-label="Logout"
+      matTooltip="Logout"
+    >
+      <mat-icon>logout</mat-icon>
+    </button>
   </div>
 </header>
 

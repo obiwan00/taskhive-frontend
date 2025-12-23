@@ -1,16 +1,23 @@
 header {
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  gap: 24px;
+  gap: 32px;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .links {
   display: flex;
   gap: 16px;
-
   width: 100%;
+
+  a {
+    font-size: 1rem;
+  }
 
   .active-link {
     font-weight: bold;
@@ -22,6 +29,10 @@ header {
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
+
+  app-user-info {
+    max-width: 200px;
+  }
 }
 
 
