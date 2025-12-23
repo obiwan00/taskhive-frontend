@@ -48,18 +48,17 @@
       aria-label="Filter by assignee"
     >
       <mat-select-trigger>
-        @if (selectedAssignee(); as selectedAssignee) {
+        @let assigneeId = assigneeControl.value;
+        @if (assigneeId === null) {
+          All assignees
+        } @else if (assigneesLoading()) {
+          Loading...
+        } @else if (assignees() | invoke : findAssignee : assigneeId; as selectedAssignee) {
           <app-user-info
             [firstName]="selectedAssignee.firstName"
             [lastName]="selectedAssignee.lastName"
             [email]="selectedAssignee.email"
             [showDetailsOverlay]="false"/>
-        } @else {
-          @if (!assigneesLoading()) {
-            All assignees
-          } @else {
-            Loading...
-          }
         }
       </mat-select-trigger>
       <mat-option [value]="null">

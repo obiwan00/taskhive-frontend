@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 import { ProjectAssignee } from '@features/projects/assignees';
-import { ValidationMessagePipe } from '@shared/pipes';
+import { InvokePipe, ValidationMessagePipe } from '@shared/pipes';
 import { UserInfoComponent } from '@shared/ui';
 
 import { TICKET_STATUS_LABELS, TicketStatus } from '../../models';
@@ -39,6 +39,7 @@ export interface TicketsFilterQuery {
     ValidationMessagePipe,
     UserInfoComponent,
     TicketStatusComponent,
+    InvokePipe,
   ]
 })
 export class TicketsFiltersComponent {
@@ -46,9 +47,8 @@ export class TicketsFiltersComponent {
 
   readonly assignees = input.required<ProjectAssignee[] | null>();
   readonly assigneesLoading = input<boolean>(false);
-  readonly filterChange = output<TicketsFilterQuery>();
 
-  readonly selectedAssignee = signal<ProjectAssignee | null>(null);
+  readonly filterChange = output<TicketsFilterQuery>();
 
   protected readonly searchControl = new FormControl('', {
     validators: [Validators.maxLength(100)]
@@ -72,6 +72,10 @@ export class TicketsFiltersComponent {
     this.searchControl.setValue('');
   }
 
+  protected findAssignee(assignees: ProjectAssignee[], assigneeId: string): ProjectAssignee | undefined {
+    return assignees?.find(a => a.userId === assigneeId);
+  }
+
   private subscribeToSearchChanges(): void {
     this.searchControl.valueChanges
       .pipe(
@@ -91,10 +95,7 @@ export class TicketsFiltersComponent {
   private subscribeToAssigneeChanges(): void {
     this.assigneeControl.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.emitFilterChange();
-        this.updateCurrentAssignee();
-      });
+      .subscribe(() => this.emitFilterChange());
   }
 
   private emitFilterChange(): void {
@@ -105,12 +106,5 @@ export class TicketsFiltersComponent {
         assigneeId: this.assigneeControl.value || undefined
       });
     }
-  }
-
-  protected updateCurrentAssignee(): void {
-    const assigneeId = this.assigneeControl.value;
-    const selectedAssignee = this.assignees()?.find(a => a.userId === assigneeId) ?? null;
-
-    this.selectedAssignee.set(selectedAssignee);
   }
 }

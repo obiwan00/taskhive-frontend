@@ -34,10 +34,10 @@
       <mat-select
         aria-label="Select assignee"
         formControlName="assigneeId"
-        (selectionChange)="updateSelectedAssignee()"
       >
         <mat-select-trigger>
-          @if (selectedAssignee(); as selectedAssignee) {
+          @let assigneeId = form.controls.assigneeId.value;
+          @if (assigneeId | invoke : findAssignee; as selectedAssignee) {
             <app-user-info
               [firstName]="selectedAssignee.firstName"
               [lastName]="selectedAssignee.lastName"

@@ -8,7 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 
 import { ProjectAssignee } from '@features/projects/assignees';
-import { ValidationMessagePipe } from '@shared/pipes';
+import { InvokePipe, ValidationMessagePipe } from '@shared/pipes';
 import { UserInfoComponent } from '@shared/ui';
 
 import { TICKET_VALIDATION } from '../../constants';
@@ -32,6 +32,7 @@ export interface CreateTicketDialogData {
     MatSelectModule,
     ValidationMessagePipe,
     UserInfoComponent,
+    InvokePipe,
   ]
 })
 export class CreateTicketDialogComponent {
@@ -81,10 +82,7 @@ export class CreateTicketDialogComponent {
     this.dialogRef.close();
   }
 
-  protected updateSelectedAssignee(): void {
-    const assigneeId = this.form.controls.assigneeId.value;
-    const selectedAssignee = this.assignees.find(a => a.userId === assigneeId) ?? null;
-
-    this.selectedAssignee.set(selectedAssignee);
+  protected findAssignee(assigneeId: string): ProjectAssignee | undefined {
+    return this.assignees.find(a => a.userId === assigneeId);
   }
 }
