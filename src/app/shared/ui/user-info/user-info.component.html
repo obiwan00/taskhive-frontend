@@ -1,54 +1,28 @@
-@if (showOverlay()) {
-  <div
-    class="content"
-    [appHoverOverlay]="userInfoTemplate"
-  >
-    <app-avatar
-      class="avatar"
-      [firstName]="firstName()"
-      [lastName]="lastName()"
-    />
-    <div class="user-details">
-      <span class="name">
-        {{ firstName() }} {{ lastName() }}
-      </span>
-      @if (showEmail()) {
-        <app-copy-text
-          class="email"
-          [value]="email()"
-        >
-          {{ email() }}
-        </app-copy-text>
-      }
-    </div>
+<div
+  class="content"
+  [appHoverOverlay]="showDetailsOverlay() ? userInfoTemplate : null"
+>
+  <app-avatar
+    class="avatar"
+    [firstName]="firstName()"
+    [lastName]="lastName()"
+  />
+  <div class="user-details">
+    <span class="name">
+      {{ firstName() }} {{ lastName() }}
+    </span>
+    @if (showEmail()) {
+      <app-copy-text class="email" [value]="email()">
+        {{ email() }}
+      </app-copy-text>
+    }
   </div>
+</div>
 
-  <ng-template #userInfoTemplate>
-    <app-user-info-overlay
-      [firstName]="firstName()"
-      [lastName]="lastName()"
-      [email]="email()"/>
-  </ng-template>
-} @else {
-  <div class="content">
-    <app-avatar
-      class="avatar"
-      [firstName]="firstName()"
-      [lastName]="lastName()"
-    />
-    <div class="user-details">
-      <span class="name">
-        {{ firstName() }} {{ lastName() }}
-      </span>
-      @if (showEmail()) {
-        <app-copy-text
-          class="email"
-          [value]="email()"
-        >
-          {{ email() }}
-        </app-copy-text>
-      }
-    </div>
-  </div>
-}
+<ng-template #userInfoTemplate>
+  <app-user-info-overlay
+    [firstName]="firstName()"
+    [lastName]="lastName()"
+    [email]="email()"/>
+</ng-template>
 

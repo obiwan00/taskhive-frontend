@@ -9,7 +9,7 @@ import {
   Renderer2,
   ViewContainerRef,
   TemplateRef,
-  OnInit
+  effect
 } from '@angular/core';
 
 const OVERLAY_POSITIONS: ConnectedPosition[] = [
@@ -39,8 +39,8 @@ const OVERLAY_POSITIONS: ConnectedPosition[] = [
 @Directive({
   selector: '[appHoverOverlay]'
 })
-export class HoverOverlayDirective implements OnInit, OnDestroy {
-  template = input.required<TemplateRef<unknown>>({ alias: 'appHoverOverlay' });
+export class HoverOverlayDirective implements OnDestroy {
+  template = input<TemplateRef<unknown> | null>(null, { alias: 'appHoverOverlay' });
   timeToShowInMs = input<number>(500);
   timeToHideInMs = input<number>(100);
 
@@ -58,8 +58,16 @@ export class HoverOverlayDirective implements OnInit, OnDestroy {
   private showTimeout: ReturnType<typeof setTimeout> | null = null;
   private hideTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  ngOnInit(): void {
-    this.attachHostListeners();
+  constructor() {
+    effect(() => {
+      const template = this.template();
+
+      if (template) {
+        this.attachHostListeners();
+      } else {
+        this.cleanup();
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -67,6 +75,10 @@ export class HoverOverlayDirective implements OnInit, OnDestroy {
   }
 
   private attachHostListeners(): void {
+    if (this.isAlreadyAttached) {
+      return;
+    }
+
     this.mouseEnterListener = this.renderer.listen(
       this.elementRef.nativeElement,
       'mouseenter',
@@ -80,8 +92,12 @@ export class HoverOverlayDirective implements OnInit, OnDestroy {
     );
   }
 
+  private get isAlreadyAttached(): boolean {
+    return !!this.mouseEnterListener;
+  }
+
   private scheduleShow(): void {
-    if (this.isShowScheduledOrVisible()) {
+    if (this.isShowScheduledOrVisible() || !this.template()) {
       return;
     }
 
@@ -99,7 +115,7 @@ export class HoverOverlayDirective implements OnInit, OnDestroy {
   private showOverlay(): void {
     this.cancelHideTimeout();
 
-    if (this.overlayRef) {
+    if (this.overlayRef || !this.template()) {
       return;
     }
 
@@ -108,6 +124,12 @@ export class HoverOverlayDirective implements OnInit, OnDestroy {
   }
 
   private createOverlay(): void {
+    const template = this.template();
+
+    if (!template) {
+      return;
+    }
+
     const positionStrategy = this.overlayPositionBuilder
       .flexibleConnectedTo(this.elementRef)
       .withPositions(OVERLAY_POSITIONS);
@@ -118,7 +140,7 @@ export class HoverOverlayDirective implements OnInit, OnDestroy {
       hasBackdrop: false
     });
 
-    const portal = new TemplatePortal(this.template(), this.viewContainerRef);
+    const portal = new TemplatePortal(template, this.viewContainerRef);
     this.overlayRef.attach(portal);
   }
 

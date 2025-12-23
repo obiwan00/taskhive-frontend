@@ -26,6 +26,6 @@ export class UserInfoComponent {
   lastName = input.required<string>();
   email = input.required<string>();
   showEmail = input<boolean>(false);
-  showOverlay = input<boolean>(true);
+  showDetailsOverlay = input<boolean>(true);
 }
 
