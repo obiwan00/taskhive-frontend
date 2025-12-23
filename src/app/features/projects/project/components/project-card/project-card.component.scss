@@ -32,14 +32,27 @@
     font-size: 24px;
     font-weight: 600;
     color: var(--color-text-primary);
+    line-height: 1.4;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
+
+  &__role {
+    margin-top: 2px;
   }
 
   &__body {
     color: var(--color-text-secondary);
+    min-width: 0;
   }
 
   &__description {
     margin: 0;
     line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 }

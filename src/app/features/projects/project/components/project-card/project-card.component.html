@@ -2,7 +2,7 @@
   <div class="project-card__header">
     <div class="project-card__header-left">
       <h2 class="project-card__title">{{ project().title }}</h2>
-      <app-project-role [role]="project().myRole" />
+      <app-project-role class="project-card__role" [role]="project().myRole" />
     </div>
     <div class="project-card__header-right">
       @if (project().myRole | canProject: ProjectPermission.ViewProjectMembers) {
