@@ -21,7 +21,7 @@
       <ng-container matColumnDef="createdAt">
         <th mat-header-cell *matHeaderCellDef>Created At</th>
         <td mat-cell *matCellDef="let project">
-          {{ project.createdAtUtc | date:'MMM d, y' }}
+          {{ project.createdAtUtc | date:'MMM d, y HH:mm' }}
         </td>
       </ng-container>
 
@@ -29,7 +29,7 @@
         <th mat-header-cell *matHeaderCellDef>Updated At</th>
         <td mat-cell *matCellDef="let project">
           @if (project.updatedAtUtc) {
-            {{ project.updatedAtUtc | date:'MMM d, y' }}
+            {{ project.updatedAtUtc | date:'MMM d, y HH:mm' }}
           } @else {
             —
           }
