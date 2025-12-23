@@ -11,9 +11,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 import { ValidationMessagePipe } from '@shared/pipes';
 
-import { PROJECT_ROLE_LABELS, ProjectRole } from '../../models';
+import { ProjectRole } from '../../models';
 import { ProjectRoleComponent } from '../project-role';
-
 
 export interface ProjectsFilterQuery {
   search?: string;
@@ -46,11 +45,7 @@ export class ProjectsFiltersComponent {
   });
   protected readonly roleControl = new FormControl<ProjectRole | null>(null);
 
-  protected readonly availableRoles = [
-    { value: ProjectRole.Owner, label: PROJECT_ROLE_LABELS[ProjectRole.Owner] },
-    { value: ProjectRole.Member, label: PROJECT_ROLE_LABELS[ProjectRole.Member] },
-    { value: ProjectRole.Viewer, label: PROJECT_ROLE_LABELS[ProjectRole.Viewer] }
-  ];
+  protected readonly availableRoles = Object.values(ProjectRole).map((value) => ({ value }));
 
   constructor() {
     this.subscribeToSearchChanges();

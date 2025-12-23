@@ -2,13 +2,19 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 
 import { ChipColor, ChipComponent } from '@shared/ui';
 
-import { PROJECT_ROLE_LABELS, ProjectRole } from '../../models';
+import { ProjectRole } from '../../models';
 
 
 const PROJECT_ROLE_COLORS: Record<ProjectRole, ChipColor> = {
   [ProjectRole.Owner]: 'purple',
   [ProjectRole.Member]: 'green',
   [ProjectRole.Viewer]: 'gray',
+};
+
+const PROJECT_ROLE_LABELS: Record<ProjectRole, string> = {
+  [ProjectRole.Owner]: 'Owner',
+  [ProjectRole.Member]: 'Member',
+  [ProjectRole.Viewer]: 'Viewer',
 };
 
 @Component({
