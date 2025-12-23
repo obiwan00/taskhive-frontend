@@ -33,6 +33,11 @@ export class ProjectStateService {
     return this.load();
   }
 
+  refresh(): Observable<void> {
+    this.clear();
+    return this.load();
+  }
+
   load(): Observable<void> {
     if (!this.projectId) return throwError(() => this.getUninitializedError());
 

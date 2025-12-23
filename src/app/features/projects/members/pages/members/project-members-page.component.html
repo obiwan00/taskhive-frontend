@@ -1,5 +1,109 @@
-<div class="project-members-page">
-  <h2>Project Members</h2>
-  <p>Project members page placeholder</p>
-</div>
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner/>
+  </div>
+}
+
+@if (error()) {
+  <app-info-block type="error">
+    {{ error() }}
+  </app-info-block>
+}
+
+@if (!loading() && !error()) {
+  <div class="members-page">
+    <button mat-button (click)="onBackToProject()" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Project
+    </button>
+
+    <div class="page-header">
+      <div class="header-left">
+        <h1 class="page-title">Project Members</h1>
+        <p class="page-description">
+          Manage team members and their roles within this project. Control access and permissions for collaboration.
+        </p>
+      </div>
+      <div class="header-right">
+        @if (canAddMember()) {
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="onAddMember()"
+            [disabled]="maxMembersReached() || updating() || !canAddMember()"
+            [matTooltip]="addButtonTooltip()"
+            aria-label="Add new project member"
+          >
+            <mat-icon>person_add</mat-icon>
+            Add Member
+          </button>
+        }
+      </div>
+    </div>
+
+    <app-info-block type="info" class="info-block">
+      {{ infoBlockMessage() }}
+    </app-info-block>
+
+    <div class="members-table-container">
+      <table mat-table [dataSource]="members()">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let member">
+            <app-user-info
+              [firstName]="member.user.firstName"
+              [lastName]="member.user.lastName"
+              [email]="member.user.email"/>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef>Role</th>
+          <td mat-cell *matCellDef="let member">
+            <app-project-role [role]="member.role"/>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let member">
+            <div class="actions-cell">
+              <span [matTooltip]="member | invoke : getEditTooltip">
+                 <button
+                   mat-icon-button
+                   (click)="onEditMember(member)"
+                   [disabled]="!canUpdateMemberRole() || updating()"
+                   aria-label="Edit member role"
+                 >
+                <mat-icon>edit</mat-icon>
+              </button>
+              </span>
+              <span [matTooltip]="member | invoke : getRemoveTooltip">
+                @let canRemove = member | invoke : canRemoveMemberCheck;
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="onRemoveMember(member)"
+                  [disabled]="!canRemove || updating()"
+                  aria-label="Remove member from project"
+                >
+                  <mat-icon>person_remove</mat-icon>
+                </button>
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      @if (members().length === 0) {
+        <app-info-block type="info" class="empty-state">
+          No members found in this project.
+        </app-info-block>
+      }
+    </div>
+  </div>
+}
 

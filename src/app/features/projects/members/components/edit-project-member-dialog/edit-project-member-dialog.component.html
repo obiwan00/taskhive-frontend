@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>Edit Project Member</h2>
+
+<mat-dialog-content>
+  <div class="member-info">
+    <div class="info-row">
+      <span class="label">Name:</span>
+      <span class="value">{{ member.user.firstName }} {{ member.user.lastName }}</span>
+    </div>
+    <div class="info-row">
+      <span class="label">Email:</span>
+      <span class="value">
+        <app-copy-text [value]="member.user.email">{{ member.user.email }}</app-copy-text>
+      </span>
+    </div>
+    <div class="info-row">
+      <span class="label">Added:</span>
+      <span class="value">{{ member.createdAtUtc | date: 'MMM d, y, HH:mm' }}</span>
+    </div>
+    @if (member.updatedAtUtc) {
+      <div class="info-row">
+        <span class="label">Last Updated:</span>
+        <span class="value">{{ member.updatedAtUtc | date: 'MMM d, y, HH:mm' }}</span>
+      </div>
+    }
+  </div>
+
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="role">
+        <mat-select-trigger>
+          @let role = form.controls.role.value;
+          @if (role !== null) {
+            <app-project-role [role]="role"/>
+          }
+        </mat-select-trigger>
+        @for (role of roles; track role.value) {
+          <mat-option [value]="role.value">
+            <app-project-role [role]="role.value"/>
+          </mat-option>
+        }
+      </mat-select>
+      @if (form.controls.role.invalid && form.controls.role.touched) {
+        <mat-error>{{ form.controls.role.errors | validationMessage }}</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="onSave()"
+    [disabled]="form.invalid"
+  >
+    Save
+  </button>
+</mat-dialog-actions>
+

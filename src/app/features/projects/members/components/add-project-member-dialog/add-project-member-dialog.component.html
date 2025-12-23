@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Add Project Member</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email"/>
+      @if (form.controls.email.invalid && form.controls.email.touched) {
+        <mat-error>{{ form.controls.email.errors | validationMessage }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="role">
+        <mat-select-trigger>
+          @let role = form.controls.role.value;
+          @if (role !== null) {
+            <app-project-role [role]="role"/>
+          }
+        </mat-select-trigger>
+        @for (role of roles; track role.value) {
+          <mat-option [value]="role.value">
+            <app-project-role [role]="role.value"/>
+          </mat-option>
+        }
+      </mat-select>
+      @if (form.controls.role.invalid && form.controls.role.touched) {
+        <mat-error>{{ form.controls.role.errors | validationMessage }}</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="onAdd()"
+    [disabled]="form.invalid"
+  >
+    Add Member
+  </button>
+</mat-dialog-actions>
+

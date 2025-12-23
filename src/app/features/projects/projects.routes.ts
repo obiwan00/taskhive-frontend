@@ -27,7 +27,7 @@ export const projectsRoutes: Routes = [
       },
       {
         path: 'members',
-        loadChildren: () => import('./members/project-members.routes').then(m => m.projectMembersRoutes)
+        loadComponent: () => import('./members/pages/members/project-members-page.component').then(m => m.ProjectMembersPageComponent)
       },
       {
         path: '',
