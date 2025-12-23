@@ -18,19 +18,17 @@
       <ng-container matColumnDef="assignee">
         <th mat-header-cell *matHeaderCellDef>Assignee</th>
         <td mat-cell *matCellDef="let ticket">
-          <div class="assignee-info">
-            <span class="assignee-name">
-              {{ ticket.assignee.firstName }} {{ ticket.assignee.lastName }}
-            </span>
-            <span class="assignee-email">{{ ticket.assignee.email }}</span>
-          </div>
+          <app-user-info
+            [firstName]="ticket.assignee.firstName"
+            [lastName]="ticket.assignee.lastName"
+            [email]="ticket.assignee.email"/>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="createdAt">
         <th mat-header-cell *matHeaderCellDef>Created At</th>
         <td mat-cell *matCellDef="let ticket">
-          {{ ticket.createdAtUtc | date: 'MMM d, y' }}
+          {{ ticket.createdAtUtc | date: 'MMM d, y HH:mm' }}
         </td>
       </ng-container>
 
@@ -38,7 +36,7 @@
         <th mat-header-cell *matHeaderCellDef>Last Updated</th>
         <td mat-cell *matCellDef="let ticket">
           @if (ticket.updatedAtUtc) {
-            {{ ticket.updatedAtUtc | date: 'MMM d, y' }}
+            {{ ticket.updatedAtUtc | date: 'MMM d, y HH:mm' }}
           } @else {
             <span class="text-secondary">—</span>
           }

@@ -12,6 +12,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ValidationMessagePipe } from '@shared/pipes';
 
 import { PROJECT_ROLE_LABELS, ProjectRole } from '../../models';
+import { ProjectRoleComponent } from '../project-role';
 
 
 export interface ProjectsFilterQuery {
@@ -31,7 +32,8 @@ export interface ProjectsFilterQuery {
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    ValidationMessagePipe
+    ValidationMessagePipe,
+    ProjectRoleComponent
   ]
 })
 export class ProjectsFiltersComponent {

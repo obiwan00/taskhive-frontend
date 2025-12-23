@@ -77,7 +77,7 @@ export class ProjectBoardPageComponent implements OnInit {
     page: this.currentPage() + 1,
     pageSize: this.currentPageSize(),
     search: this.currentFilters().search,
-    status: this.currentFilters().status?.toString(),
+    status: this.currentFilters().status,
     assigneeId: this.currentFilters().assigneeId,
   }));
 
@@ -249,6 +249,7 @@ export class ProjectBoardPageComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (ticket) => {
+          this.loadTickets();
           this.openCreateTicketNotification(ticket.id);
         },
         error: (err) => {

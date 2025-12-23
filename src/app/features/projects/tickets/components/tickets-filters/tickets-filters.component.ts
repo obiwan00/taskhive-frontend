@@ -12,8 +12,10 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 import { ProjectAssignee } from '@features/projects/assignees';
 import { ValidationMessagePipe } from '@shared/pipes';
+import { UserInfoComponent } from '@shared/ui';
 
 import { TICKET_STATUS_LABELS, TicketStatus } from '../../models';
+import { TicketStatusComponent } from '../ticket-status';
 
 export interface TicketsFilterQuery {
   search?: string;
@@ -34,7 +36,9 @@ export interface TicketsFilterQuery {
     MatProgressSpinnerModule,
     MatButtonModule,
     MatIconModule,
-    ValidationMessagePipe
+    ValidationMessagePipe,
+    UserInfoComponent,
+    TicketStatusComponent,
   ]
 })
 export class TicketsFiltersComponent {
@@ -43,6 +47,8 @@ export class TicketsFiltersComponent {
   readonly assignees = input.required<ProjectAssignee[] | null>();
   readonly assigneesLoading = input<boolean>(false);
   readonly filterChange = output<TicketsFilterQuery>();
+
+  readonly selectedAssignee = signal<ProjectAssignee | null>(null);
 
   protected readonly searchControl = new FormControl('', {
     validators: [Validators.maxLength(100)]
@@ -85,16 +91,26 @@ export class TicketsFiltersComponent {
   private subscribeToAssigneeChanges(): void {
     this.assigneeControl.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.emitFilterChange());
+      .subscribe(() => {
+        this.emitFilterChange();
+        this.updateCurrentAssignee();
+      });
   }
 
   private emitFilterChange(): void {
     if (this.searchControl.valid) {
       this.filterChange.emit({
         search: this.searchControl.value || undefined,
-        status: this.statusControl.value || undefined,
+        status: this.statusControl.value ?? undefined,
         assigneeId: this.assigneeControl.value || undefined
       });
     }
+  }
+
+  protected updateCurrentAssignee(): void {
+    const assigneeId = this.assigneeControl.value;
+    const selectedAssignee = this.assignees()?.find(a => a.userId === assigneeId) ?? null;
+
+    this.selectedAssignee.set(selectedAssignee);
   }
 }

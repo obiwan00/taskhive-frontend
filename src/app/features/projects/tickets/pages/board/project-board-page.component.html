@@ -17,6 +17,7 @@
       <button
         mat-raised-button
         color="primary"
+        [disabled]="assigneesLoading()"
         (click)="onCreateTicketClick()"
         aria-label="Create new ticket"
       >

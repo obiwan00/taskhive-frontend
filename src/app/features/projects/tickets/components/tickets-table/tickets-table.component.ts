@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 
-import { InfoBlockComponent } from '@shared/ui';
+import { InfoBlockComponent, UserInfoComponent } from '@shared/ui';
 
 import { TicketBrief } from '../../models';
 import { TicketStatusComponent } from '../ticket-status';
@@ -18,7 +18,8 @@ import { TicketStatusComponent } from '../ticket-status';
     MatTableModule,
     MatPaginatorModule,
     TicketStatusComponent,
-    InfoBlockComponent
+    InfoBlockComponent,
+    UserInfoComponent
   ]
 })
 export class TicketsTableComponent {

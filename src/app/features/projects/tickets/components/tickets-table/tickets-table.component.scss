@@ -19,6 +19,10 @@
 
   td {
     color: var(--color-text-secondary);
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .clickable-row {
@@ -35,21 +39,6 @@
     color: var(--color-text-primary);
   }
 
-  .assignee-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .assignee-name {
-    font-weight: 500;
-    color: var(--color-text-primary);
-  }
-
-  .assignee-email {
-    font-size: 0.875rem;
-    color: var(--color-text-secondary);
-  }
 
   .text-secondary {
     color: var(--color-text-secondary);
