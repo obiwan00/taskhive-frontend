@@ -1,0 +1,51 @@
+<svg viewBox="0 0 98 18" xmlns="http://www.w3.org/2000/svg" aria-label="TaskHive">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color: var(--color-primary, #667eea); stop-opacity: 1"/>
+      <stop offset="100%" style="stop-color: var(--color-primary, #667eea); stop-opacity: 0.7"/>
+    </linearGradient>
+  </defs>
+
+  <g>
+    <!-- Outer hexagon: regular hexagon with radius 7 -->
+    <path
+      d="M 10 2 L 16.062 5.5 L 16.062 12.5 L 10 16 L 3.938 12.5 L 3.938 5.5 Z"
+      fill="url(#logoGradient)"
+      stroke="var(--color-primary, #667eea)"
+      stroke-width="1.2"
+    />
+    <!-- Inner hexagon: regular hexagon with radius 4 -->
+    <path
+      d="M 10 5 L 13.464 7 L 13.464 11 L 10 13 L 6.536 11 L 6.536 7 Z"
+      fill="none"
+      stroke="var(--color-surface, #ffffff)"
+      stroke-width="1.2"
+    />
+    <!-- Center dot -->
+    <circle cx="10" cy="9" r="1.5" fill="var(--color-surface, #ffffff)"/>
+  </g>
+
+  <g transform="translate(21, 14)" fill="var(--color-text-primary, #111827)">
+    <!-- Task -->
+    <text
+      font-family="Arial, sans-serif"
+      font-size="16"
+      font-weight="700"
+      letter-spacing="0.5"
+    >
+      Task
+    </text>
+    <!-- Hive -->
+    <text
+      x="40"
+      font-family="Arial, sans-serif"
+      font-size="16"
+      font-weight="700"
+      letter-spacing="0.5"
+      fill="url(#logoGradient)"
+    >
+      Hive
+    </text>
+  </g>
+</svg>
+

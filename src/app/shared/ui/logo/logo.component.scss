@@ -1,0 +1,21 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo-img {
+  display: block;
+
+  &--small {
+    width: 120px;
+  }
+
+  &--medium {
+    width: 180px;
+  }
+
+  &--large {
+    width: 240px;
+  }
+}
+
