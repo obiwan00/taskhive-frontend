@@ -21,3 +21,12 @@ a {
   }
 }
 
+.mat-mdc-option {
+  .mdc-list-item__primary-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+}
+
