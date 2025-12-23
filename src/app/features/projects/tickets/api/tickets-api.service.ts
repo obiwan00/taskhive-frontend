@@ -26,7 +26,7 @@ export class TicketsApiService {
   }
 
   update(projectId: string, ticketId: string, data: UpdateTicket) {
-    return this.http.patch<TicketDetails>(`/api/projects/${projectId}/tickets/${ticketId}`, data);
+    return this.http.patch<void>(`/api/projects/${projectId}/tickets/${ticketId}`, data);
   }
 
   delete(projectId: string, ticketId: string) {

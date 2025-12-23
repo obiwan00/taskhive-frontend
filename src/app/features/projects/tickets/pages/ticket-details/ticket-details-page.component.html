@@ -1,5 +1,182 @@
-<div class="ticket-details-page">
-  <h1>Ticket Details</h1>
-  <p>Ticket details page placeholder</p>
-</div>
+@if (loading()) {
+  <div class="loading-container">
+    <mat-spinner/>
+  </div>
+}
+
+@if (error()) {
+  <app-info-block type="error">
+    {{ error() }}
+  </app-info-block>
+}
+
+@if (ticket(); as ticket) {
+  <div class="ticket-details-page">
+    <div class="header">
+      <div class="header-container">
+
+        <button mat-button (click)="onBackToProject()">
+          <mat-icon>arrow_back</mat-icon>
+          Back to Project
+        </button>
+
+        <app-save-status
+          [saveStatus]="saveStatus()"
+          [hasUnsavedChanges]="hasUnsavedChanges()"
+          [updating]="updating()"
+          (retry)="onRetry()"
+        />
+      </div>
+    </div>
+
+    <div class="ticket-content">
+      <div class="ticket-left">
+        <div class="ticket-title-section">
+          @if (projectRole() | canProject: ProjectPermission.UpdateTicket) {
+            <textarea
+              class="ticket-title-input"
+              [formControl]="ticketForm.controls.title"
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="1"
+              placeholder="Ticket title"
+              (keydown)="preventTitleNewLineOnKeydown($event)"
+              (paste)="preventTitleNewLineOnPaste($event)"
+            ></textarea>
+            @if (ticketForm.controls.title.invalid) {
+              <div class="validation-error">
+                {{ ticketForm.controls.title.errors | validationMessage }}
+              </div>
+            }
+          } @else {
+            <h1 class="ticket-title">{{ ticket.title }}</h1>
+          }
+        </div>
+
+        <div class="ticket-description-section">
+          @if (projectRole() | canProject: ProjectPermission.UpdateTicket) {
+            <textarea
+              class="ticket-description-input"
+              [formControl]="ticketForm.controls.description"
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="3"
+              placeholder="Ticket description"
+            ></textarea>
+            @if (ticketForm.controls.description.invalid) {
+              <div class="validation-error">
+                {{ ticketForm.controls.description.errors | validationMessage }}
+              </div>
+            }
+          } @else {
+            <div class="ticket-description">
+              <p>{{ ticket.description }}</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="ticket-right">
+        <div class="ticket-fields">
+          <div class="field-group">
+            <span class="field-label">Status</span>
+            @if (projectRole() | canProject: ProjectPermission.UpdateTicket) {
+              <mat-select
+                class="borderless-select"
+                [formControl]="ticketForm.controls.status"
+                (selectionChange)="saveChanges()"
+                panelClass="borderless-select-panel"
+              >
+                <mat-select-trigger>
+                  <app-ticket-status [status]="ticketForm.controls.status.value"/>
+                </mat-select-trigger>
+                @for (status of statusOptions; track status.value) {
+                  <mat-option [value]="status.value">
+                    <app-ticket-status [status]="status.value"/>
+                  </mat-option>
+                }
+              </mat-select>
+            } @else {
+              <div class="field-value">
+                <app-ticket-status [status]="ticket.status"/>
+              </div>
+            }
+          </div>
+
+          <div class="field-group">
+            <span class="field-label">Assignee</span>
+            @if (projectRole() | canProject: ProjectPermission.UpdateTicket) {
+              <mat-select
+                class="borderless-select"
+                [formControl]="ticketForm.controls.assigneeId"
+                (selectionChange)="saveChanges()"
+                panelClass="borderless-select-panel"
+              >
+                <mat-select-trigger>
+                  @let assigneeId = ticketForm.controls.assigneeId.value;
+                  @if (assigneeId === null) {
+                    Unassigned
+                  } @else if (assigneesLoading()) {
+                    Loading...
+                  } @else if (assignees() | invoke : findAssignee : assigneeId; as selectedAssignee) {
+                    <app-user-info
+                      [firstName]="selectedAssignee.firstName"
+                      [lastName]="selectedAssignee.lastName"
+                      [email]="selectedAssignee.email"/>
+                  }
+                </mat-select-trigger>
+                @if (assigneesLoading()) {
+                  <mat-option disabled>Loading assignees...</mat-option>
+                }
+                @if (assignees(); as assigneesList) {
+                  @for (assignee of assigneesList; track assignee.userId) {
+                    <mat-option [value]="assignee.userId">
+                      <app-user-info
+                        [firstName]="assignee.firstName"
+                        [lastName]="assignee.lastName"
+                        [email]="assignee.email"
+                        [showDetailsOverlay]="false"/>
+                    </mat-option>
+                  }
+                }
+              </mat-select>
+            } @else {
+              <div class="field-value">
+                <app-user-info
+                  [firstName]="ticket.assignee.firstName"
+                  [lastName]="ticket.assignee.lastName"
+                  [email]="ticket.assignee.email"/>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="ticket-info">
+          <div class="info-item">
+            <span class="info-label">Created</span>
+            <span class="info-value">{{ ticket.createdAtUtc | date: 'MMM d, y, HH:mm' }}</span>
+          </div>
+          @if (ticket.updatedAtUtc) {
+            <div class="info-item">
+              <span class="info-label">Last Updated</span>
+              <span class="info-value">{{ ticket.updatedAtUtc | date: 'MMM d, y, HH:mm' }}</span>
+            </div>
+          }
+        </div>
+
+        @if (projectRole() | canProject: ProjectPermission.DeleteTicket) {
+          <div class="ticket-actions">
+            <button
+              mat-stroked-button
+              color="warn"
+              (click)="onDelete()"
+              [disabled]="updating()"
+            >
+              <mat-icon>delete</mat-icon>
+              Delete
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
 

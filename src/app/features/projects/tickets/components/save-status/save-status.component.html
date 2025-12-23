@@ -1,0 +1,29 @@
+<div class="save-status">
+  @if (saveStatus() === 'saved') {
+    <div class="status-saved">
+      <mat-icon>check_circle</mat-icon>
+      <span>Changes saved</span>
+    </div>
+  }
+  @if (saveStatus() === 'error') {
+    <div class="status-error">
+      <mat-icon>error</mat-icon>
+      <span>Changes not saved</span>
+      <button
+        mat-icon-button
+        (click)="onRetry()"
+        [disabled]="updating()"
+        matTooltip="Retry save"
+      >
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  }
+  @if (hasUnsavedChanges() && saveStatus() === null) {
+    <div class="status-unsaved">
+      <mat-icon>edit</mat-icon>
+      <span>Unsaved changes</span>
+    </div>
+  }
+</div>
+

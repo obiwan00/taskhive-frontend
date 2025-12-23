@@ -5,7 +5,7 @@ import { TicketStatus } from './ticket-status.model';
 
 export interface GetTicketsQuery extends PaginationQuery {
   search?: string;
-  status?: string;
+  status?: TicketStatus;
   assigneeId?: string;
 }
 
@@ -18,7 +18,7 @@ export interface CreateTicket {
 export interface UpdateTicket {
   title?: string;
   description?: string;
-  status?: number;
+  status?: TicketStatus;
   assigneeId?: string;
 }
 
