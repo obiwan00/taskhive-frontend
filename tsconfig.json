@@ -16,7 +16,10 @@
     "module": "preserve",
     "paths": {
       "@core/auth": ["./src/app/core/auth/index.ts"],
+      "@core/guards": ["./src/app/core/guards/index.ts"],
+      "@core/services": ["./src/app/core/services/index.ts"],
       "@core/user": ["./src/app/core/user/index.ts"],
+      "@core/tokens": ["./src/app/core/tokens/index.ts"],
       "@shared/constants": ["./src/app/shared/constants/index.ts"],
       "@shared/directives": ["./src/app/shared/directives/index.ts"],
       "@shared/models": ["./src/app/shared/models/index.ts"],

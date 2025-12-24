@@ -1,0 +1,30 @@
+<div class="unsupported-screen">
+  <div class="unsupported-screen__content">
+    <div class="unsupported-screen__logo">
+      <app-logo [size]="'large'"/>
+    </div>
+
+    <h1 class="unsupported-screen__title">Screen Size Not Supported</h1>
+
+    <p class="unsupported-screen__message">
+      This application is optimized for desktop and laptop browsers.
+      Please use a device with a screen width of at least <strong>{{ MIN_DESKTOP_WIDTH }}px</strong> for the best
+      experience.
+    </p>
+
+    <div class="unsupported-screen__info">
+      <h2 class="unsupported-screen__info-title">About This Project</h2>
+      <p class="unsupported-screen__info-text">
+        TaskHive is a learning project built with Angular, created as a frontend for studying and practicing backend
+        development with <strong>.NET Core</strong>.
+      </p>
+      <p class="unsupported-screen__info-text">
+        View the source code on GitHub:
+        <a href="{{PROJECT_GITHUB_REPO}}" class="unsupported-screen__link" target="_blank" rel="noopener noreferrer">
+          TaskHive Repository
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+
