@@ -17,6 +17,7 @@
     "paths": {
       "@core/auth": ["./src/app/core/auth/index.ts"],
       "@core/guards": ["./src/app/core/guards/index.ts"],
+      "@core/navigation-routes": ["./src/app/core/navigation-routes/index.ts"],
       "@core/services": ["./src/app/core/services/index.ts"],
       "@core/user": ["./src/app/core/user/index.ts"],
       "@core/tokens": ["./src/app/core/tokens/index.ts"],

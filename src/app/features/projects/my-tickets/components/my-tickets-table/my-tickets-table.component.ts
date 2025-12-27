@@ -6,6 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 
+import { AppNavRoutes } from '@core/navigation-routes';
 import { TicketStatusComponent } from '@features/projects/tickets';
 import { InfoBlockComponent } from '@shared/ui';
 
@@ -28,6 +29,8 @@ import { MyTicket } from '../../models';
   ]
 })
 export class MyTicketsTableComponent {
+  protected readonly AppNavRoutes = AppNavRoutes;
+
   readonly tickets = input.required<MyTicket[]>();
   readonly totalCount = input.required<number>();
   readonly pageSize = input<number>(20);

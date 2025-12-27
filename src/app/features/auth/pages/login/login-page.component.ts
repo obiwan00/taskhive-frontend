@@ -8,6 +8,7 @@ import { Router, RouterModule } from '@angular/router';
 
 import { LoginUser } from '@core/auth';
 import { AuthService } from '@core/auth';
+import { AppNavRoutes } from '@core/navigation-routes';
 import { ValidationMessagePipe } from '@shared/pipes';
 import { InfoBlockComponent } from '@shared/ui';
 
@@ -52,7 +53,7 @@ export class LoginPageComponent {
 
     this.authService.login(data).subscribe({
       next: () => {
-        this.router.navigate(['/app']);
+        this.router.navigate([AppNavRoutes.appRoot]);
       },
       error: (error: HttpErrorResponse) => {
         this.isLoading.set(false);

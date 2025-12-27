@@ -17,6 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { catchError, debounceTime, EMPTY, filter, switchMap, tap } from 'rxjs';
 
+import { AppNavRoutes } from '@core/navigation-routes';
 import { ProjectAssignee, ProjectAssigneesStateService } from '@features/projects/assignees';
 import { CanProjectPipe, ProjectPermission, ProjectStateService } from '@features/projects/project';
 import { InvokePipe, ValidationMessagePipe } from '@shared/pipes';
@@ -237,7 +238,7 @@ export class TicketDetailsPageComponent implements OnInit {
   }
 
   protected onBackToProject(): void {
-    this.router.navigate(['/app/projects', this.projectId(), 'board']);
+    this.router.navigate([AppNavRoutes.projects.board(this.projectId())]);
   }
 
   protected onDelete(): void {
@@ -271,7 +272,7 @@ export class TicketDetailsPageComponent implements OnInit {
       )
       .subscribe(() => {
         this.snackBar.open('Ticket deleted successfully', 'Close');
-        this.router.navigate(['/app/projects', this.projectId(), 'tickets']);
+        this.router.navigate([AppNavRoutes.projects.board(this.projectId())]);
       });
   }
 
@@ -348,7 +349,7 @@ export class TicketDetailsPageComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: (err) => {
-          this.router.navigate(['/app/projects/list']);
+          this.router.navigate([AppNavRoutes.projects.list]);
           this.snackBar.open('Failed to load project details. Please try again', 'Close');
           console.error('Error loading project details:', err);
         }

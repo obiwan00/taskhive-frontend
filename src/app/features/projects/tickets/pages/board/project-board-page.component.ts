@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { filter, switchMap } from 'rxjs/operators';
 
+import { AppNavRoutes } from '@core/navigation-routes';
 import { ProjectAssigneesStateService } from '@features/projects/assignees';
 import {
   CanProjectPipe,
@@ -119,11 +120,11 @@ export class ProjectBoardPageComponent implements OnInit {
   }
 
   protected onTicketRowClick(ticket: TicketBrief): void {
-    this.router.navigate(['/app/projects', this.projectId(), 'tickets', ticket.id]);
+    this.router.navigate([AppNavRoutes.projects.ticketDetails(this.projectId(), ticket.id)]);
   }
 
   protected onManageMembersClick(): void {
-    this.router.navigate(['/app/projects', this.projectId(), 'members']);
+    this.router.navigate([AppNavRoutes.projects.members(this.projectId())]);
   }
 
   protected onProjectEditClick(): void {
@@ -198,7 +199,7 @@ export class ProjectBoardPageComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: (err) => {
-          this.router.navigate(['/app/projects/list']);
+          this.router.navigate([AppNavRoutes.projects.list]);
           this.snackBar.open('Failed to load project details. Please try again', 'Close');
           console.error('Error loading project details:', err);
         }
@@ -264,7 +265,7 @@ export class ProjectBoardPageComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.router.navigate(['/app/projects']);
+          this.router.navigate([AppNavRoutes.projectsRoot]);
           this.snackBar.open('Project deleted successfully', 'Close');
         },
         error: (err) => {
@@ -280,7 +281,7 @@ export class ProjectBoardPageComponent implements OnInit {
     snackBarRef.onAction()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        this.router.navigate(['/app/projects', this.projectId(), 'tickets', ticketId]);
+        this.router.navigate([AppNavRoutes.projects.ticketDetails(this.projectId(), ticketId)]);
       });
   }
 }

@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
+import { AppNavRoutes } from '@core/navigation-routes';
 import { InfoBlockComponent } from '@shared/ui';
 
 import { ProjectsApiService } from '../../api';
@@ -83,7 +84,7 @@ export class ProjectsListPageComponent {
   }
 
   protected onRowClick(project: ProjectBrief): void {
-    this.router.navigate(['/app/projects', project.id, 'board']);
+    this.router.navigate([AppNavRoutes.projects.board(project.id)]);
   }
 
   protected onCreateProject(): void {
@@ -142,7 +143,7 @@ export class ProjectsListPageComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (project: ProjectBrief) => {
-          this.router.navigate(['/app/projects', project.id, 'board']);
+          this.router.navigate([AppNavRoutes.projects.board(project.id)]);
         },
         error: (err: unknown) => {
           console.error('Error creating project:', err);

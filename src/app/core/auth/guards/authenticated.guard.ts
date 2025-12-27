@@ -1,6 +1,8 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
+import { AppNavRoutes } from '@core/navigation-routes';
+
 import { AuthService } from '../services';
 
 export const authenticatedGuard: CanActivateFn = () => {
@@ -11,6 +13,6 @@ export const authenticatedGuard: CanActivateFn = () => {
     return true;
   }
 
-  return router.createUrlTree(['/auth/login']);
+  return router.createUrlTree([AppNavRoutes.auth.login]);
 };
 

@@ -5,6 +5,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
+import { AppNavRoutes } from '@core/navigation-routes';
 import { InfoBlockComponent } from '@shared/ui';
 
 import { MyTicketsApiService } from '../../api';
@@ -71,7 +72,7 @@ export class MyTicketsPageComponent {
   }
 
   protected onRowClick(ticket: MyTicket): void {
-    this.router.navigate(['/app/projects', ticket.project.id, 'tickets', ticket.id]);
+    this.router.navigate([AppNavRoutes.projects.ticketDetails(ticket.project.id, ticket.id)]);
   }
 
   private loadTickets(): void {

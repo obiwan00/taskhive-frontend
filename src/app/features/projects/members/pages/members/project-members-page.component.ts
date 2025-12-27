@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { catchError, EMPTY, filter, of, switchMap, tap } from 'rxjs';
 
+import { AppNavRoutes } from '@core/navigation-routes';
 import { UserService } from '@core/user';
 import {
   ProjectPermission,
@@ -231,7 +232,7 @@ export class ProjectMembersPageComponent implements OnInit {
       )
       .subscribe(() => {
         if (this.isCurrentUserAMember(member)) {
-          this.router.navigate(['/app/projects/list']);
+          this.router.navigate([AppNavRoutes.projects.list]);
         } else {
           this.loadMembers();
         }
@@ -287,7 +288,7 @@ export class ProjectMembersPageComponent implements OnInit {
   }
 
   protected onBackToProject(): void {
-    this.router.navigate(['/app/projects', this.projectId(), 'board']);
+    this.router.navigate([AppNavRoutes.projects.board(this.projectId())]);
   }
 
   private loadProjectDetails(): void {
@@ -295,7 +296,7 @@ export class ProjectMembersPageComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: (err) => {
-          this.router.navigate(['/app/projects/list']);
+          this.router.navigate([AppNavRoutes.projects.list]);
           this.snackBar.open('Failed to load project details. Please try again', 'Close');
           console.error('Error loading project details:', err);
         }
@@ -307,7 +308,7 @@ export class ProjectMembersPageComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: (err) => {
-          this.router.navigate(['/app/projects/list']);
+          this.router.navigate([AppNavRoutes.projects.list]);
           this.snackBar.open('Failed to load project details. Please try again', 'Close');
           console.error('Error loading project details:', err);
         }

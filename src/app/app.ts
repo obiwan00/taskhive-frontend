@@ -5,6 +5,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { distinctUntilChanged } from 'rxjs';
 
 import { AuthService } from '@core/auth';
+import { AppNavRoutes } from '@core/navigation-routes';
 import { ScreenSizeService } from '@core/services';
 
 @Component({
@@ -35,7 +36,7 @@ export class App implements OnInit {
           this.router.navigate(['/unsupported-screen']);
         } else {
           const isAuthenticated = this.authService.isLoggedIn();
-          const targetRoute = isAuthenticated ? '/app' : '/auth';
+          const targetRoute = isAuthenticated ? AppNavRoutes.appRoot : AppNavRoutes.authRoot;
           this.router.navigate([targetRoute]);
         }
       });

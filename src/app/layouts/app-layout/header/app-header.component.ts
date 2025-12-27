@@ -5,6 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { AuthService } from '@core/auth';
+import { AppNavRoutes } from '@core/navigation-routes';
 import { UserService } from '@core/user';
 import { LogoComponent, UserInfoComponent } from '@shared/ui';
 
@@ -25,6 +26,8 @@ import { LogoComponent, UserInfoComponent } from '@shared/ui';
 export class AppHeaderComponent {
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
+
+  protected readonly AppNavRoutes = AppNavRoutes;
 
   protected readonly userProfile = this.userService.profile;
 

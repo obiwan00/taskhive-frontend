@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 
 import { Observable, catchError, map, of, tap } from 'rxjs';
 
+import { AppNavRoutes } from '@core/navigation-routes';
+
 import { AuthApiService } from '../api';
 import { AccessTokens, LoginUser, RegisterUser } from '../models';
 
@@ -70,7 +72,7 @@ export class AuthService {
   logout(): void {
     this.tokenService.clearTokens();
     this.isAuthenticated.set(false);
-    this.router.navigate(['/auth/login']);
+    this.router.navigate([AppNavRoutes.auth.login]);
   }
 
   get isLoggedIn() {
