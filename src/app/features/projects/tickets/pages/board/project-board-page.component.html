@@ -8,7 +8,9 @@
       (deleteClick)="onProjectDeleteClick()"
     />
   } @else {
-    project details loading...
+    <div class="loading-container">
+      <mat-spinner/>
+    </div>
   }
 
   <div class="tickets-header">
@@ -39,7 +41,9 @@
       <p>{{ ticketsState().error }}</p>
     </app-info-block>
   } @else if (ticketsState().loading) {
-    tickets loading...
+    <div class="loading-container">
+      <mat-spinner/>
+    </div>
   } @else {
     <app-tickets-table
       [tickets]="ticketsState().tickets"
