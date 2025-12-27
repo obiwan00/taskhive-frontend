@@ -18,6 +18,7 @@ import {
   ProjectDialogComponent,
   ProjectDialogData,
   ProjectPermission,
+  ProjectPermissionService,
   ProjectsApiService,
   ProjectStateService,
   UpdateProject
@@ -54,7 +55,7 @@ interface BoardTicketsState {
     ProjectCardComponent,
     TicketsFiltersComponent,
     TicketsTableComponent,
-    CanProjectPipe
+    CanProjectPipe,
   ]
 })
 export class ProjectBoardPageComponent implements OnInit {
@@ -62,6 +63,7 @@ export class ProjectBoardPageComponent implements OnInit {
   private readonly ticketsApi = inject(TicketsApiService);
   private readonly projectStateService = inject(ProjectStateService);
   private readonly projectAssigneesStateService = inject(ProjectAssigneesStateService);
+  private readonly projectPermissionService = inject(ProjectPermissionService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly dialog = inject(MatDialog);
@@ -89,6 +91,11 @@ export class ProjectBoardPageComponent implements OnInit {
     totalCount: 0,
     loading: false,
     error: null
+  });
+
+  protected readonly canViewAssignees = computed(() => {
+    const role = this.projectDetails()?.myRole;
+    return role ? this.projectPermissionService.hasPermission(role, ProjectPermission.ViewProjectAssignees) : false;
   });
 
   private readonly currentFilters = signal<TicketsFilterQuery>({});
@@ -235,6 +242,10 @@ export class ProjectBoardPageComponent implements OnInit {
   }
 
   private loadAssignees() {
+    if (!this.canViewAssignees()) {
+      return;
+    }
+
     this.projectAssigneesStateService.init(this.projectId())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({

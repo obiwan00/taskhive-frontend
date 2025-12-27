@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -47,6 +47,7 @@ export class TicketsFiltersComponent {
 
   readonly assignees = input.required<ProjectAssignee[] | null>();
   readonly assigneesLoading = input<boolean>(false);
+  readonly canViewAssigneeFilter = input<boolean>(false);
 
   readonly filterChange = output<TicketsFilterQuery>();
 

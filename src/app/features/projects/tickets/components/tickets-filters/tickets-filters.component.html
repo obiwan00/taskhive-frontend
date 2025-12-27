@@ -41,46 +41,48 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field class="filters__select">
-    <mat-label>Assignee</mat-label>
-    <mat-select
-      [formControl]="assigneeControl"
-      aria-label="Filter by assignee"
-    >
-      <mat-select-trigger>
-        @let assigneeId = assigneeControl.value;
-        @if (assigneeId === null) {
-          All assignees
-        } @else if (assigneesLoading()) {
-          Loading...
-        } @else if (assignees() | invoke : findAssignee : assigneeId; as selectedAssignee) {
-          <app-user-info
-            [firstName]="selectedAssignee.firstName"
-            [lastName]="selectedAssignee.lastName"
-            [email]="selectedAssignee.email"
-            [showDetailsOverlay]="false"/>
-        }
-      </mat-select-trigger>
-      <mat-option [value]="null">
-        @if (!assigneesLoading()) {
-          All assignees
-        } @else {
-          Loading...
-        }
-      </mat-option>
-
-      @let assigneesList = assignees();
-      @if (!assigneesLoading() && assigneesList) {
-        @for (assignee of assigneesList; track assignee.userId) {
-          <mat-option [value]="assignee.userId">
+  @if (canViewAssigneeFilter()) {
+    <mat-form-field class="filters__select">
+      <mat-label>Assignee</mat-label>
+      <mat-select
+        [formControl]="assigneeControl"
+        aria-label="Filter by assignee"
+      >
+        <mat-select-trigger>
+          @let assigneeId = assigneeControl.value;
+          @if (assigneeId === null) {
+            All assignees
+          } @else if (assigneesLoading()) {
+            Loading...
+          } @else if (assignees() | invoke : findAssignee : assigneeId; as selectedAssignee) {
             <app-user-info
-              [firstName]="assignee.firstName"
-              [lastName]="assignee.lastName"
-              [email]="assignee.email"
+              [firstName]="selectedAssignee.firstName"
+              [lastName]="selectedAssignee.lastName"
+              [email]="selectedAssignee.email"
               [showDetailsOverlay]="false"/>
-          </mat-option>
+          }
+        </mat-select-trigger>
+        <mat-option [value]="null">
+          @if (!assigneesLoading()) {
+            All assignees
+          } @else {
+            Loading...
+          }
+        </mat-option>
+
+        @let assigneesList = assignees();
+        @if (!assigneesLoading() && assigneesList) {
+          @for (assignee of assigneesList; track assignee.userId) {
+            <mat-option [value]="assignee.userId">
+              <app-user-info
+                [firstName]="assignee.firstName"
+                [lastName]="assignee.lastName"
+                [email]="assignee.email"
+                [showDetailsOverlay]="false"/>
+            </mat-option>
+          }
         }
-      }
-    </mat-select>
-  </mat-form-field>
+      </mat-select>
+    </mat-form-field>
+  }
 </div>
