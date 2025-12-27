@@ -7,7 +7,7 @@
 
 .members-page {
   padding: 1rem 2rem;
-  max-width: 1200px;
+  max-width: var(--app-page-container-max-width);
   margin: 0 auto;
 }
 

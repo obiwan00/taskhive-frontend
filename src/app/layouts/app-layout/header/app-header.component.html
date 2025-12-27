@@ -1,29 +1,31 @@
 <header>
-  <app-logo [size]="'medium'"/>
+  <div class="container">
+    <app-logo [size]="'medium'"/>
 
-  <ul class="links">
-    <li><a [routerLink]="AppNavRoutes.projectsRoot" routerLinkActive="active-link">Projects</a></li>
-    <li><a [routerLink]="AppNavRoutes.myTickets" routerLinkActive="active-link">My tickets</a></li>
-  </ul>
+    <ul class="links">
+      <li><a [routerLink]="AppNavRoutes.projectsRoot" routerLinkActive="active-link">Projects</a></li>
+      <li><a [routerLink]="AppNavRoutes.myTickets" routerLinkActive="active-link">My tickets</a></li>
+    </ul>
 
-  <div class="header-actions">
-    @if (userProfile(); as userProfile) {
-      <app-user-info
-        [firstName]="userProfile.firstName"
-        [lastName]="userProfile.lastName"
-        [email]="userProfile.email"
-        [showEmail]="true"
-        [showDetailsOverlay]="false"
-      />
-    }
-    <button
-      mat-icon-button
-      (click)="logout()"
-      aria-label="Logout"
-      matTooltip="Logout"
-    >
-      <mat-icon>logout</mat-icon>
-    </button>
+    <div class="header-actions">
+      @if (userProfile(); as userProfile) {
+        <app-user-info
+          [firstName]="userProfile.firstName"
+          [lastName]="userProfile.lastName"
+          [email]="userProfile.email"
+          [showEmail]="true"
+          [showDetailsOverlay]="false"
+        />
+      }
+      <button
+        mat-icon-button
+        (click)="logout()"
+        aria-label="Logout"
+        matTooltip="Logout"
+      >
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
   </div>
 </header>
 

@@ -12,7 +12,7 @@
   padding: 1rem;
 
   &__content {
-    max-width: 600px;
+    max-width: var(--unsupported-size-page-container-max-width);
     width: 100%;
     text-align: center;
     background: var(--color-surface);
