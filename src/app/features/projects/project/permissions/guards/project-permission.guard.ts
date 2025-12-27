@@ -2,9 +2,10 @@ import { inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CanActivateFn, Router } from '@angular/router';
 
-import { map } from 'rxjs';
+import { finalize, map } from 'rxjs';
 
 import { AppNavRoutes } from '@core/navigation-routes';
+import { GlobalLoaderService } from '@core/services';
 
 import { ProjectStateService } from '../../state';
 import { ProjectPermission } from '../models';
@@ -19,6 +20,7 @@ export const projectPermissionGuard = (permissions: ProjectPermission[]): CanAct
   (route) => {
     const projectStateService = inject(ProjectStateService);
     const permissionService = inject(ProjectPermissionService);
+    const globalLoaderService = inject(GlobalLoaderService);
     const router = inject(Router);
     const snackBar = inject(MatSnackBar);
 
@@ -30,8 +32,13 @@ export const projectPermissionGuard = (permissions: ProjectPermission[]): CanAct
 
     const { requireAllPermissions = true } = route.data as ProjectPermissionGuardData;
 
-
+    const loaderToken = globalLoaderService.acquire();
     return projectStateService.init(projectId).pipe(
+      finalize(() => {
+        if (loaderToken) {
+          globalLoaderService.release(loaderToken);
+        }
+      }),
       map(() => {
         const project = projectStateService.project();
 

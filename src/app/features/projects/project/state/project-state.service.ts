@@ -25,8 +25,12 @@ export class ProjectStateService {
 
   private projectId?: string;
 
+  isProjectLoaded(projectId: string): boolean {
+    return this.projectId === projectId && this.project()?.id === projectId;
+  }
+
   init(projectId: string): Observable<void> {
-    if (this.projectId === projectId) return of(void 0);
+    if (this.isProjectLoaded(projectId)) return of(void 0);
 
     this.projectId = projectId;
     this.clear();
