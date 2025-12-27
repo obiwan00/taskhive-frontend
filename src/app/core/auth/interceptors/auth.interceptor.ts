@@ -11,6 +11,7 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, filter, switchMap, take } from 'rxjs/operators';
 
 import { AuthService, TokenService } from '../services';
+import { SKIP_AUTH_REFRESH } from '../tokens/skip-auth-refresh.context-token';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -44,11 +45,15 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handleRequestError(error: unknown, request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (error instanceof HttpErrorResponse && error.status === 401) {
+    if (error instanceof HttpErrorResponse && error.status === 401 && !this.shouldSkipRefresh(request)) {
       return this.handle401Error(request, next);
     }
 
     return throwError(() => error);
+  }
+
+  private shouldSkipRefresh(request: HttpRequest<unknown>): boolean {
+    return request.context.get(SKIP_AUTH_REFRESH);
   }
 
   private handle401Error(
@@ -75,6 +80,10 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    if (this.shouldSkipRefresh(request)) {
+      return throwError(() => new Error('401 received for an auth request; token refresh not applicable'));
+    }
+
     this.isRefreshTokenInProgress = true;
     this.refreshToken$$.next(null);
 
@@ -90,8 +99,13 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     this.isRefreshTokenInProgress = false;
     const newAccessToken = this.tokenService.getAccessToken();
+    if (!newAccessToken) {
+      this.authService.logout();
+      return throwError(() => new Error('Access token missing after refresh'));
+    }
+
     this.refreshToken$$.next(newAccessToken);
-    return next.handle(this.addToken(request, newAccessToken!));
+    return next.handle(this.addToken(request, newAccessToken));
   }
 
   private handleRefreshError(error: unknown): Observable<never> {
