@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { catchError, debounceTime, EMPTY, filter, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, EMPTY, filter, Subject, switchMap, tap } from 'rxjs';
 
 import { AppNavRoutes } from '@core/navigation-routes';
 import { ProjectAssignee, ProjectAssigneesStateService } from '@features/projects/assignees';
@@ -70,6 +70,8 @@ export class TicketDetailsPageComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly destroyRef = inject(DestroyRef);
+
+  private readonly updateTrigger$ = new Subject<UpdateTicket>();
 
   private readonly projectId = computed(() => {
     const id = this.route.snapshot.paramMap.get('projectId');
@@ -134,13 +136,51 @@ export class TicketDetailsPageComponent implements OnInit {
 
   protected readonly statusOptions = Object.values(TicketStatus).map((value) => ({ value }));
 
-  // TODO fix race condition when status and assignees changed
   ngOnInit(): void {
     this.loadTicketDetails();
     this.loadProjectDetails();
     this.loadAssignees();
 
     this.subscribeForSavingUnsavedChanges();
+    this.setupUpdateStream();
+  }
+
+  private setupUpdateStream(): void {
+    this.updateTrigger$
+      .pipe(
+        tap(() => {
+          this.state.update(s => ({ ...s, updating: true }));
+          this.saveStatus.set(null);
+        }),
+        switchMap((updates) =>
+          this.ticketsApi.update(this.projectId(), this.ticketId(), updates).pipe(
+            catchError((error) => {
+              this.snackBar.open('Failed to update ticket', 'Close');
+              this.state.update(s => ({ ...s, updating: false }));
+              this.saveStatus.set('error');
+              return EMPTY;
+            })
+          )
+        ),
+        tap(() => {
+          this.saveStatus.set('saved');
+          this.hasUnsavedChanges.set(false);
+        }),
+        switchMap(() => this.ticketsApi.getDetails(this.projectId(), this.ticketId()).pipe(
+          catchError((error) => {
+            this.snackBar.open('Failed to load ticket after update', 'Close');
+            this.state.update(s => ({ ...s, updating: false }));
+            return EMPTY;
+          })
+        )),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((updatedTicket) => {
+        this.state.update(s => ({ ...s, ticket: updatedTicket, updating: false }));
+
+        this.ticketForm.markAsPristine();
+        this.patchTicketForm(updatedTicket);
+      });
   }
 
   private subscribeForSavingUnsavedChanges(): void {
@@ -152,13 +192,11 @@ export class TicketDetailsPageComponent implements OnInit {
             this.saveStatus.set(null);
           }
         }),
-        debounceTime(2000),
+        debounceTime(1500),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        if (this.hasUnsavedChanges() && this.ticketForm.valid) {
-          this.saveChanges();
-        }
+        this.saveChanges();
       });
   }
 
@@ -203,7 +241,7 @@ export class TicketDetailsPageComponent implements OnInit {
       return;
     }
 
-    this.updateTicket(updates);
+    this.updateTrigger$.next(updates);
   }
 
   protected onRetry(): void {
@@ -276,33 +314,6 @@ export class TicketDetailsPageComponent implements OnInit {
       });
   }
 
-  private updateTicket(data: UpdateTicket): void {
-    const ticket = this.ticket();
-    if (!ticket) return;
-
-    this.state.update(s => ({ ...s, updating: true }));
-    this.saveStatus.set(null);
-
-    this.ticketsApi.update(this.projectId(), this.ticketId(), data)
-      .pipe(
-        catchError(() => {
-          this.snackBar.open('Failed to update ticket', 'Close');
-          this.state.update(s => ({ ...s, updating: false }));
-          this.saveStatus.set('error');
-          return EMPTY;
-        }),
-        switchMap(() => this.ticketsApi.getDetails(this.projectId(), this.ticketId())),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe((updatedTicket) => {
-        this.state.update(s => ({ ...s, ticket: updatedTicket, updating: false, }));
-        this.saveStatus.set('saved');
-        this.hasUnsavedChanges.set(false);
-
-        this.ticketForm.markAsPristine();
-        this.patchTicketForm(updatedTicket);
-      });
-  }
 
   private loadTicketDetails(): void {
     this.state.update(s => ({ ...s, loading: true, error: null }));

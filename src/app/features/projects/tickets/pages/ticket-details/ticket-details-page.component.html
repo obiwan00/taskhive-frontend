@@ -82,7 +82,6 @@
               <mat-select
                 class="borderless-select"
                 [formControl]="ticketForm.controls.status"
-                (selectionChange)="saveChanges()"
                 panelClass="borderless-select-panel"
               >
                 <mat-select-trigger>
@@ -107,7 +106,6 @@
               <mat-select
                 class="borderless-select"
                 [formControl]="ticketForm.controls.assigneeId"
-                (selectionChange)="saveChanges()"
                 panelClass="borderless-select-panel"
               >
                 <mat-select-trigger>
