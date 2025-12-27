@@ -1,7 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { InfoBlockComponent, UserInfoComponent } from '@shared/ui';
 
@@ -16,7 +18,9 @@ import { TicketStatusComponent } from '../ticket-status';
   imports: [
     DatePipe,
     MatTableModule,
+    MatSortModule,
     MatPaginatorModule,
+    MatTooltipModule,
     TicketStatusComponent,
     InfoBlockComponent,
     UserInfoComponent

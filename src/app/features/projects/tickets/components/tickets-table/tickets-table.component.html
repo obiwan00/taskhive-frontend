@@ -1,6 +1,6 @@
 <div class="table-container">
   @if (tickets().length > 0) {
-    <table mat-table [dataSource]="tickets()" class="tickets-table">
+    <table mat-table [dataSource]="tickets()" matSort matSortActive="updatedAt" matSortDirection="desc" matSortDisabled class="tickets-table">
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef>Ticket</th>
         <td mat-cell *matCellDef="let ticket">
@@ -33,7 +33,16 @@
       </ng-container>
 
       <ng-container matColumnDef="updatedAt">
-        <th mat-header-cell *matHeaderCellDef>Last Updated</th>
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          disabled
+          matTooltip="Sorted by most recent activity (updated or created)"
+          matTooltipPosition="above"
+        >
+          Last Updated
+        </th>
         <td mat-cell *matCellDef="let ticket">
           @if (ticket.updatedAtUtc) {
             {{ ticket.updatedAtUtc | date: 'MMM d, y HH:mm' }}
