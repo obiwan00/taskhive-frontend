@@ -19,7 +19,6 @@ export class ScreenSizeService {
 
     return fromEvent(window, 'resize')
       .pipe(
-        startWith(void 0),
         debounceTime(300),
         map(() => this.isDesktopSize),
       );
