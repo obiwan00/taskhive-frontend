@@ -15,6 +15,7 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
+      "@environments/environment": ["./src/environments/environment.ts"],
       "@core/auth": ["./src/app/core/auth/index.ts"],
       "@core/guards": ["./src/app/core/guards/index.ts"],
       "@core/navigation-routes": ["./src/app/core/navigation-routes/index.ts"],
