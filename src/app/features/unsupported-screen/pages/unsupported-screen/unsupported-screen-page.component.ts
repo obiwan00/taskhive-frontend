@@ -6,11 +6,11 @@ import { LogoComponent } from '@shared/ui';
 @Component({
   selector: 'app-unsupported-screen-page',
   imports: [LogoComponent],
-  templateUrl: './unsupported-screen.component.html',
-  styleUrl: './unsupported-screen.component.scss',
+  templateUrl: './unsupported-screen-page.component.html',
+  styleUrl: './unsupported-screen-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UnsupportedScreenComponent {
+export class UnsupportedScreenPage {
   protected readonly MIN_DESKTOP_WIDTH = inject(MIN_DESKTOP_WIDTH);
   protected readonly PROJECT_GITHUB_REPO = inject(PROJECT_GITHUB_REPO);
 }
