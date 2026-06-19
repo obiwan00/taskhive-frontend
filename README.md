@@ -7,6 +7,15 @@ This repository contains a **demonstration Angular frontend** whose primary purp
 Backend: https://github.com/obiwan00/taskhive-backend <br>
 Live Demo: https://white-mud-0bd195c03.2.azurestaticapps.net/ (desktop only, no mobile support)
 
+### Features Brief
+
+- User registration and authentication (JWT + refresh tokens)
+- Multiple **projects** per user
+- **Ticket** creation, update, assignment, and deletion
+- Project-scoped roles and permissions (Roles: `Owner`, `Member`, `Viewer`)
+- **Project Members** management
+- Viewing **all tickets assigned** to the current user
+
 ## Project Purpose
 
 This frontend exists primarily to:
